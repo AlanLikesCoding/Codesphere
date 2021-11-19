@@ -1,0 +1,120 @@
+body{
+  word-break: break-all;
+}
+
+.body{
+  margin: 4em;
+  margin-right: 7em !important;
+  margin-left: 7em !important;
+}
+
+.card{
+  margin: 1em;
+}
+.form{
+  width: 85%;
+  padding: 40px;
+}
+
+.form-desc{
+  background-image: url("img/mountain.jpg");
+   background-color: #cccccc;
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+#user, input[type="email"], input[type="password"]{
+  border-radius: 16px;
+}
+
+.header-container{
+  position: relative;
+  display: inline-block;
+  width: 99%;
+  overflow: hidden;
+}
+
+#header{
+  border: none;
+  border-bottom: 1px solid lightgrey;
+  font-size: 30px;
+  outline: none;
+  width: 100%;
+}
+
+.underline{
+  transition: all 0.5s;
+  display: inline-block;
+  bottom: 0;
+  left: -100%;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #64e4fe;
+}
+
+#header:focus + .underline{
+  left: 0;
+}
+
+#btn{
+  border-radius: 18px;
+  background-image: linear-gradient(to right top, #3e649e, #a065ae, #ef648f, #ff8653, #ebc312);
+  border: none;
+  width: 100%;
+}
+
+.white{
+  color: white !important;
+}
+
+.right{
+  float: right !important;
+}
+
+
+.left{
+  float: left !important;
+}
+
+.upvote-container{
+  display: flex;  
+}
+
+.upvote{
+  float: left;
+  display: flex;
+}
+
+.q{
+  float: right;
+  display: block;
+}
+
+.num{
+  margin: 13px;
+  float: left;
+}
+.ctrl-btn{
+  float: right;
+  display: block;
+}
+.btn-upvote, .btn-downvote{
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+  color: lightgrey;
+  border: none;
+  background-color: white;
+  padding: none;
+  margin-right: 5px;
+  outline: none !important;
+}
+
+.btn-upvote:hover:not(:disabled), .btn-downvote:hover:not(:disabled){
+  color: grey;
+  font-size: 17px !important;
+}
+

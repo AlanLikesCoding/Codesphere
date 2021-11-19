@@ -1,0 +1,41 @@
+{% extends "codesphere/layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+    <div class="card-group form-wrapper">
+      <div class="card">
+        <div class="card-body form">
+          <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label><small class="text-muted">Username: </small></label>
+                <input id="user" class="form-control" autofocus type="text" name="username" placeholder="Enter your username here...">
+            </div>
+            <div class="form-group">
+                <label><small class="text-muted">Email Address: </small></label>
+                <input id="user" class="form-control" type="email" name="email" placeholder="Enter your contact email address here...">
+            </div>
+            <div class="form-group">
+                <label><small class="text-muted">Password: </small></label>
+                <input id="user" class="form-control" type="password" name="password" placeholder="Enter your password here...">
+            </div>
+            <div class="form-group">
+                <label><small class="text-muted">Confirm Password: </small></label>
+                <input id="user" class="form-control" type="password" name="confirmation" placeholder="Please confirm your password...">
+            </div><br>
+            <input class="btn btn-primary" id="btn" type="submit" value="Register"><hr>
+            <small class="text-muted">Already have an account? <a href="{% url 'login' %}">Log In here.</a></small>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body form-desc">
+          <h5 class="card-title display-4 white">What is Codesphere.org?</h5>
+          <p class="card-text text-muted"><small><i>Codesphere.org a fast and user friendly online user integrated environment. Begin your adventure through coding without any worries about setting things up.</i></small></p>
+        </div>
+      </div>
+    </div>
+{% endblock %}

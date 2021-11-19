@@ -1,0 +1,20 @@
+{% extends "codesphere/layout.html" %}
+
+{% block body %}
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <form action="{% url 'apiask' %}" method="POST">
+      {% csrf_token %}
+        <div class="header-container">
+          {{ form.question }}<!--<input name="question" placeholder="Enter yuro question here..." id="header" type="text">--><span class="underline"></span>
+        </div>
+        <br><br>
+        <!-- <input name="content" class="form-control" type="text"><br> -->
+        <!--<textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea>-->{{ form.content }}<hr>
+        <input type="submit" class="btn btn-primary" value="Ask">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

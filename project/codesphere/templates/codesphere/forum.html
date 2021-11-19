@@ -1,0 +1,17 @@
+{% extends "codesphere/layout.html" %}
+
+{% block body %}
+<div class="container">
+  {% for i in questions %}
+  <div class="main">
+    <div class="card">
+        <div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
+          <span class="display-4">{{ i.question }}</span>
+          <span class="text-muted">{{ i.asker.username }}</span>
+          <p class="lead">{{ i.content|truncatechars:20}}</p>
+        </div>
+    </div>
+  </div>
+  {% endfor %} 
+</div>
+{% endblock %}
