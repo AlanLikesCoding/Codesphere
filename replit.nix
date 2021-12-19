@@ -8,5 +8,3 @@
         pkgs.unzip
 	];
 }
-
-# what package do u want?

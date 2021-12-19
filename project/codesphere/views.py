@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -19,16 +20,12 @@ from .models import Answer
 from .models import User
 
 # Django Forms
+from .forms import RegisterForm
 from .forms import AskForm
 
 def index(request):
     question = Question.objects.get(pk = 1)
     user = User.objects.get(pk = 1)
-    try:
-      user.upvoted.remove(question)
-      user.downvoted.remove(question)
-    except:
-      print(">:(")
     return render(request, "codesphere/index.html")
 
 
@@ -66,7 +63,8 @@ def register(request):
     confirmation = request.POST["confirmation"]
     if password != confirmation:
       return render(request, "codesphere/register.html", {
-        "message": "Passwords must match."
+        "message": "Passwords must match.",
+        "form": RegisterForm()
       })
 
     # Attempt to create new user
@@ -75,12 +73,15 @@ def register(request):
       #user.save()
     except IntegrityError:
       return render(request, "codesphere/register.html", {
-      "message": "Username already taken."
+      "message": "Username already taken.",
+      "form": RegisterForm()
     })
     login(request, user)
     return HttpResponseRedirect(reverse("index"))
   else:
-    return render(request, "codesphere/register.html")
+    return render(request, "codesphere/register.html", {
+      "form": RegisterForm()     
+    })
 
 @login_required
 def ask(request):
@@ -275,3 +276,15 @@ def apiaup(request, _question):
     return JsonResponse({
       "success": False
     })
+
+@csrf_exempt
+def apisearch(request):
+  post = json.loads(request.body)
+  query = post.get("query")
+  print(query)
+  question = Question.objects.filter(content__contains = query)
+  answer = Answer.objects.filter(answered = question)
+  return JsonResponse({
+    "question": question,
+    "answers": answer
+  })

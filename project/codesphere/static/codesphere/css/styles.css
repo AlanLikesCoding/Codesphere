@@ -1,11 +1,61 @@
-body{
-  word-break: break-all;
+/* IMPORTS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* COLOR THEME */
+:root {
+  --dark: #B983FF;
+  --medium: #94B3FD;
+  --light: #94DAFF;
+  --hilight: #99FEFF;
+  --gradient-dark: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(185,131,255,1) 0%, rgba(148,179,253,1) 100%);
+  --gradient-light: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(148,218,255,1) 0%, rgba(153,254,255,1) 100%);
 }
 
-.body{
-  margin: 4em;
-  margin-right: 7em !important;
-  margin-left: 7em !important;
+.codesphere-grad-light{
+  background: var(--gradient-light);
+  color: black;
+}
+
+.codesphere-grad-dark{
+  background: var(--gradient-dark);
+  color: white;
+}
+
+/* MAIN BODY */
+
+body{
+  font-family: 'Inter' !important;
+  word-break: break-all;
+  margin: 0;
+}
+
+
+/* NAVBAR */
+
+.codesphere-nav{
+  background-color: white !important;
+  color: rgb(39, 39, 39) !important;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+/* JUMBOTRON */
+
+.codesphere-jumbotron{
+  margin: 0 !important;
+  background: var(--gradient-dark);
+  color: white;
+  padding: 70px;
+  width: 100%;
+}
+
+
+/* CONTAINERS */
+
+.codesphere-img {
+  height: 609px;
+}
+.banner{
+  margin-right: 9em !important;
 }
 
 .card{

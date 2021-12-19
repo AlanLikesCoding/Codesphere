@@ -27,4 +27,4 @@ Markdown parsing and profanity filter. <br>
 Admin panel, with abilities to edit the MySQL database we are using.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+To be added

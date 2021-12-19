@@ -85,7 +85,7 @@ body {
   border-radius: none !important;
 }
 
-#changelist-filter, #content-related, caption {
+#changelist-filter, #content-related, #toolbar, caption {
   border-radius: 5px !important;
 }
 
@@ -472,7 +472,7 @@ table thead th.sorted .sortoptions a.descending:hover {
 
 input, textarea, select, .form-row p, form .button {
     margin: 2px 0;
-    padding: 2px 3px;
+    padding: 5px 6px;
     vertical-align: middle;
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
     font-weight: normal;
@@ -489,8 +489,8 @@ textarea {
 input[type=text], input[type=password], input[type=email], input[type=url],
 input[type=number], input[type=tel], textarea, select, .vTextField {
     border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 5px 6px;
+    border-radius: 5px;
+    padding: 6px 7px;
     margin-top: 0;
     color: var(--body-fg);
     background-color: var(--body-bg);
@@ -516,7 +516,7 @@ select[multiple] {
 
 .button, input[type=submit], input[type=button], .submit-row input, a.button {
     background-color: var(--button-bg) !important;
-    padding: 10px 15px;
+    padding: 5px 6px !important;
     border: none !important;
     border-radius: 4px;
     color: var(--button-fg) !important;
