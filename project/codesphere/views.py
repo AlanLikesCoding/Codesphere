@@ -1,18 +1,30 @@
 # External Libaries(outside of Django)
 import json
+from .libs import generate_token
 # Django Libaries
+# Django core
+from django.core.mail import send_mail
+from django.core import serializers
+from django.core.exceptions import ValidationError
+# Django contrib
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
-from django.core import serializers
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+# Django shortcuts
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.urls import reverse
+# Django ultils
 from django.utils.http import urlencode
-from django.core.exceptions import ValidationError
-from django.contrib.auth.decorators import login_required
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+# Other
+from django.db import IntegrityError
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.template.loader import render_to_string, get_template
 
 # Django Models
 from .models import Question
@@ -20,6 +32,7 @@ from .models import Answer
 from .models import User
 
 # Django Forms
+from .forms import LoginForm
 from .forms import RegisterForm
 from .forms import AskForm
 
@@ -31,21 +44,23 @@ def index(request):
 
 def login_view(request):
   if request.method == "POST":
-    # Attempt to sign user in
-    username = request.POST["username"]
-    password = request.POST["password"]
-    user = authenticate(request, username=username, password=password)
-
-    # Check if authentication successful
+    form = LoginForm(request.POST)
+    if form.is_valid():
+      __username = form.cleaned_data["username"]
+      __password = form.cleaned_data["password"]
+      user = authenticate(request, username = __username, password = __password)
     if user is not None:
       login(request, user)
       return HttpResponseRedirect(reverse("index"))
     else:
       return render(request, "codesphere/login.html", {
-          "message": "Invalid username and/or password."
-      })
+      "form": LoginForm(),
+      "message": "Invalid username and/or password."
+    })
   else:
-    return render(request, "codesphere/login.html")
+    return render(request, "codesphere/login.html", {
+      "form": LoginForm()
+    })
 
 @login_required
 def logout_view(request):
@@ -55,33 +70,59 @@ def logout_view(request):
 
 def register(request):
   if request.method == "POST":
-    username = request.POST["username"]
-    email = request.POST["email"]
-
-    # Ensure password matches confirmation
-    password = request.POST["password"]
-    confirmation = request.POST["confirmation"]
-    if password != confirmation:
-      return render(request, "codesphere/register.html", {
-        "message": "Passwords must match.",
-        "form": RegisterForm()
-      })
-
-    # Attempt to create new user
-    try:
-      user = User.objects.create_user(username, email, password)
-      #user.save()
-    except IntegrityError:
-      return render(request, "codesphere/register.html", {
-      "message": "Username already taken.",
-      "form": RegisterForm()
-    })
-    login(request, user)
-    return HttpResponseRedirect(reverse("index"))
+    form = RegisterForm(request.POST)
+    if form.is_valid():
+      __username = form.cleaned_data["username"]
+      __email = form.cleaned_data["email"]
+      __password = form.cleaned_data["password"]
+      __confirmation = form.cleaned_data["confirmation"]
+      # Check if username exists
+      if User.objects.filter(username = __username).exists():
+        return render(request, "codesphere/register.html", {
+          "form": RegisterForm(),
+          "message": "This username has already been taken, please choose a different username."
+        })
+      # Check if password exists
+      elif __password != __confirmation:
+        return render(request, "codesphere/register.html", {
+          "form": RegisterForm(),
+          "message": "Your password doesn't match your confirmation password."
+        })
+      # Begin making account
+      else:
+        # Email verification
+        user = User.objects.create_user(__username, __email, __password)
+        user.is_active = False
+        user.save()
+        current_site = get_current_site(request)
+        mail_subject = 'Activate your account.'
+        message = render_to_string('codesphere/email_verification.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'id': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': generate_token.make_token(user),
+        })
+        send_mail(mail_subject, message, 'support@codesphere.org', [__email])
+        return HttpResponse('Please confirm your email address to complete the registration')
   else:
     return render(request, "codesphere/register.html", {
       "form": RegisterForm()     
     })
+
+def activate(request, uidb64, token):
+  User = get_user_model()
+  try:
+    id = force_text(urlsafe_base64_decode(uidb64))
+    user = User.objects.get(pk=id)
+  except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+    user = None
+  if user is not None and account_activation_token.check_token(user, token):
+    user.is_active = True
+    user.save()
+    login(request, user)
+    return HttpResponseRedirect(reverse("index"))
+  else:
+    return HttpResponse('Activation link is invalid!')
 
 @login_required
 def ask(request):
@@ -131,7 +172,7 @@ def apians(request):
     url = "display";
     return redirect(reverse(url, kwargs={"_question": _id}))
 
-# Api for upvoting(full focumentation bellow)
+# Api for upvoting(full documentation bellow)
 """
 REST API PUT request /api/up/<question_id>
 

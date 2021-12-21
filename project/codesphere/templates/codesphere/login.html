@@ -14,11 +14,13 @@
               {% csrf_token %}
               <div class="form-group">
                 <label>Username: </label><br>
-                <input autofocus id="user" class="form-control" type="text" name="username" placeholder="Username">
+                <!-- <input autofocus id="user" class="form-control" type="text" name="username" placeholder="Username"> -->
+                {{ form.username }}
               </div>
               <div class="form-group">
                 <label>Password: </label><br>
-                <input id="user" class="form-control" type="password" name="password" placeholder="Password">
+                <!-- <input id="user" class="form-control" type="password" name="password" placeholder="Password"> -->
+                {{ form.password }}
               </div>
               <br>
               <input class="btn btn-primary" id="btn" type="submit" value="Login">
