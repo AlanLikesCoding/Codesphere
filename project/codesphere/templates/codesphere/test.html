@@ -1,54 +1,6 @@
 {% extends "codesphere/layout.html" %}
 
 {% block body %}
-  <!-- <form method="post" action="#"> -->
-    <!-- {% csrf_token %} -->
-    <textarea id="edit" name="edit"></textarea>
-  <!-- </form> -->
-    {% if message %}
-    <div>
-      {{message}}
-    </div>
-    {% endif %}
-  <script>
-    window.CSRF_TOKEN = "{{ csrf_token }}";
-    function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-    function save(){
-window.CSRF_TOKEN = "{{ csrf_token }}";
-      let data = {
-        csrfmiddlewaretoken: window.CSRF_TOKEN,
-        edit: document.getElementById("edit").value
-      }
-      var xhr = new XMLHttpRequest();
-      var url = "{% url 'test' %}";
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(data));
 
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-      xhr.send();
-      // xhr.onload = callback;
-      // console.log(data + " | " + JSON.stringify({
-      //   csrfmiddlewaretoken: document.getElementsByName("csrfmiddlewaretoken")[0].value,
-      //   edit: document.getElementById("edit").value
-      // }))
-    }
-    document.getElementById("edit").addEventListener("keyup", save)
-  </script>
 {% endblock %}
 

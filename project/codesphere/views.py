@@ -18,7 +18,7 @@ from django.shortcuts import redirect
 # Django ultils
 from django.utils.http import urlencode
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes 
 # Other
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
@@ -124,6 +124,8 @@ def activate(request, uidb64, token):
   else:
     return HttpResponse('Activation link is invalid!')
 
+def about(request, _user):
+  return(request, "codesphere/about.html")
 @login_required
 def ask(request):
   return render(request, "codesphere/ask.html", {
@@ -274,19 +276,11 @@ def apiup(request, _question):
 def apiaup(request, _question):
   put = json.loads(request.body)
   print(put)
-  # if not request.user in thread.participants.all():
-  # question = "none"
   if request.method == "PUT":
-    # print(request.POST["upvote"])
-    print("PUT")
-    print(put)
-    print(put.get('upvote'))
     answer = Answer.objects.get(pk=_question)
-    print(answer)
     user = request.user
     if put.get("upvote") == True:
       if not answer in request.user.answer_upvoted.all():
-        # if request.user.upvoted.get(pk = _question).exists() is None:
         answer.upvotes = answer.upvotes + 1
         user.answer_upvoted.add(answer)
         print("+")
@@ -321,11 +315,34 @@ def apiaup(request, _question):
 @csrf_exempt
 def apisearch(request):
   post = json.loads(request.body)
-  query = post.get("query")
-  print(query)
-  question = Question.objects.filter(content__contains = query)
-  answer = Answer.objects.filter(answered = question)
-  return JsonResponse({
-    "question": question,
-    "answers": answer
-  })
+  data = post.get("data")
+  query = data.get("query")
+  question = None
+  if Question.objects.filter(content__icontains = query).exists() == False:
+    question = Question.objects.filter(question__icontains = query)
+  else:
+    question = Question.objects.filter(content__icontains = query)
+  answer = Answer.objects.filter(answered = question.first())
+  if question is None or question.exists() == False:
+    return JsonResponse({
+      "question": "none",
+      "content": "none"
+    })
+  else:
+    question = question.first()
+    if answer.count == 0:
+      return JsonResponse({
+        "question": question.question,
+        "content": question.content
+      })
+    else:
+      amount = []
+      for i in answer:
+        amount.append(i.content)
+      answer_json = json.dumps(amount)
+      return JsonResponse({
+        "question": question.question,
+        "content": question.content,
+        "answers": answer_json
+      })
+

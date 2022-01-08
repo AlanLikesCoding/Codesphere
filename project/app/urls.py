@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import settings
 from codesphere import views
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
-    path("", include("codesphere.urls"))
-    # path("login/", views.login_view),
-    # path("logout/", views.logout_view),
-    # path("register/", views.register),
-]
+    path("", include("codesphere.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

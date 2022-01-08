@@ -47,12 +47,25 @@
                     
               </ul>
               <ul class="navbar-nav ml-auto">
-                    <li class="ms-auto nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{user.username}}
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <img src="{{ user.picture.url }}" width="42" height="42"><br>
+                        <strong>{{user.username}}</strong>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <a class="dropdown-item" href="{% url 'about' user.pk %}">Edit</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                      </ul>
                     </li>
-                    <li class="ms-auto nav-item">
+                    <!-- <li class="ms-auto nav-item">
                         <a class="nav-link" href="#">Logged in as <strong>{{ user.username }}</strong></a>
-                    </li>
+                    </li> -->
                 {% else %}
                     <li class="me-auto nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>

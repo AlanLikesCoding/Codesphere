@@ -9,9 +9,14 @@ class User(AbstractUser):
   upvoted = models.ManyToManyField("Question", related_name="up", blank=True)
   # Many to many field for questions downvoted
   downvoted = models.ManyToManyField("Question", related_name = "down", blank=True)
-  #Same as above
+  # Same as above
   answer_upvoted = models.ManyToManyField("Answer", related_name="a_up", blank=True)
   answer_downvoted = models.ManyToManyField("Answer", related_name="a_down", blank=True)
+  # About the User
+  # Profile Picture field
+  picture = models.ImageField(upload_to="profile/", default="profile/default.png")
+  # Text Field for Bio
+  bio = models.TextField(null=True)
   # Positive int field for reputation
   reputation = models.PositiveIntegerField(default=1)
 

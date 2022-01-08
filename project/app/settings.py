@@ -37,6 +37,14 @@ else:
     sys.exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+# i = 0
+# while i < 100:
+# 	print("FOR THE " + str(i + 1) + "TH TIME, DEBUG MODE IS OFF BECAUSE OF TIM")
+# 	i += 1
+
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = ["a8113080-5f5b-492d-8b53-48bc836c0dd6.id.repl.co", "codesphere.repl.co"]
@@ -138,9 +146,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Email Data
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'mail.codesphere.org'
+
+EMAIL_HOST_USER = 'support@codesphere.org'
+
+EMAIL_HOST_PASSWORD = os.environ['db_email']
+
+EMAIL_PORT = 110
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = 'media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "codesphere", MEDIA_URL)
+
+print(MEDIA_ROOT)

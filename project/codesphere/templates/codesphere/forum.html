@@ -1,17 +1,45 @@
-{% extends "codesphere/layout.html" %}
+{% extends "codesphere/layout.html" %} 
 
 {% block body %}
 <div class="container">
-  {% for i in questions %}
-  <div class="main">
-    <div class="card">
-        <div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
-          <span class="display-4">{{ i.question }}</span>
-          <span class="text-muted">{{ i.asker.username }}</span>
-          <p class="lead">{{ i.content|truncatechars:20}}</p>
+	<div class="row">
+		<div class="col-9">
+			{% for i in questions %}
+			<div class="card">
+				<div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
+					<span class="display-4">{{ i.question }}</span>
+            <span class="text-muted">{{ i.asker.username }}</span>
+            <p class="lead">{{ i.content|truncatechars:20}}</p>
+          </div>
+      </div>
+  {% endfor %} 
+  </div>
+  <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <span>Views</span><br>
+              <span class="lead">60</span>
+            </div>
+            <div class="col-6">
+              <span>Views</span><br>
+              <span class="lead">60</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span>Views</span><br>
+              <span class="lead">60</span>
+            </div>
+            <div class="col-6">
+              <span>Views</span><br>
+              <span class="lead">60</span>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
-  {% endfor %} 
 </div>
 {% endblock %}
