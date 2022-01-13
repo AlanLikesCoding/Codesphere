@@ -157,4 +157,3 @@ const avote = async (id, pos) => {
   // Refresh upvote number
   window.location.reload();
 }
-

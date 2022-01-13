@@ -25,7 +25,7 @@ class User(AbstractUser):
 class Question(models.Model):
   # Foreign key for asker. If asker user model gets deleted, it gets set to null, and deleted_name gets set to the asker's username.
   asker = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="questions", null=True)
-
+  
   deleted_name = models.TextField(null=True)
 
   # Timestamp of last time the model has been edited

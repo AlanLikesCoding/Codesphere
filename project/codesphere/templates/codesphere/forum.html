@@ -9,7 +9,7 @@
 				<div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
 					<span class="display-4">{{ i.question }}</span>
             <span class="text-muted">{{ i.asker.username }}</span>
-            <p class="lead">{{ i.content|truncatechars:20}}</p>
+            <p class="lead">{{ i.content|truncatechars:90 }}</p>
           </div>
       </div>
   {% endfor %} 

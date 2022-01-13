@@ -10,18 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# Basic
 import os
 import sys
 import platform
 
-print("="*40, "System Information", "="*40)
-uname = platform.uname()
-print(f"System: {uname.system}")
-print(f"Node Name: {uname.node}")
-print(f"Release: {uname.release}")
-print(f"Version: {uname.version}")
-print(f"Machine: {uname.machine}")
-print(f"Processor: {uname.processor}")
+# Logging
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': True
+}
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,15 +37,7 @@ else:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# i = 0
-# while i < 100:
-# 	print("FOR THE " + str(i + 1) + "TH TIME, DEBUG MODE IS OFF BECAUSE OF TIM")
-# 	i += 1
-
-
-
-DEBUG = True
-
+DEBUG = False
 ALLOWED_HOSTS = ["a8113080-5f5b-492d-8b53-48bc836c0dd6.id.repl.co", "codesphere.repl.co"]
 
 
@@ -70,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'codesphere.middleware.CodesphereMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'

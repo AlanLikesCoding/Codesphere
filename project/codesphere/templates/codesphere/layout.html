@@ -13,7 +13,7 @@
         <!-- CUSTOM STYLESHEETS -->
         <link rel="stylesheet" type="text/css" href="{% static 'codesphere/css/styles.css' %}">
         <!-- CUSTOM JAVASCRIPT -->
-        <script src="{% static 'codesphere/script.js' %}"></script>
+        <script src="{% static 'codesphere/js/script.js' %}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
@@ -52,7 +52,7 @@
                         {{user.username}}
                       </a>
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <img src="{{ user.picture.url }}" width="42" height="42"><br>
+                        <img src="/{{ user.picture.url }}" width="42" height="42"><br>
                         <strong>{{user.username}}</strong>
                         <li><hr class="dropdown-divider"></li>
                         <li>

@@ -1,6 +1,11 @@
+
 # External Libaries(outside of Django)
 import json
+# Geolocation
+from json import load
+from urllib.request import urlopen
 from .libs import generate_token
+from .libs import Colors
 # Django Libaries
 # Django core
 from django.core.mail import send_mail
@@ -35,6 +40,26 @@ from .models import User
 from .forms import LoginForm
 from .forms import RegisterForm
 from .forms import AskForm
+
+# Basic
+import os
+import sys
+import platform
+
+# System Info
+uname = platform.uname()
+print(Colors.GREEN + "[SYSTEM]" + Colors.ENDC)
+print("System: " + uname.system)
+print("Node Name: " + uname.node)
+print("Release: " + uname.release)
+print("Version: " + uname.version)
+print("Machine: " + uname.machine)
+print("Processor: " + uname.processor)
+
+# System Start
+print(Colors.GREEN + Colors.BOLD + "[SYSTEM]" + Colors.ENDC + " System has started to run, the Codesphere server is up.")
+
+print(Colors.GREEN + "[DJANGO SYSTEM]" + Colors.ENDC)
 
 def index(request):
     question = Question.objects.get(pk = 1)
@@ -124,8 +149,25 @@ def activate(request, uidb64, token):
   else:
     return HttpResponse('Activation link is invalid!')
 
+# About the User
 def about(request, _user):
-  return(request, "codesphere/about.html")
+  data = User.objects.get(pk = _user)
+  questions = Question.objects.filter(asker = data)
+  url = 'https://ipinfo.io/json'
+  res = urlopen(url)
+  #response from url(if res==None then check connection)
+  location = load(res)
+  #will load the json response into data
+  if(request.method == "POST"):
+    bio = request.POST['bio']
+    data.bio = bio
+    data.save()
+  return render(request, "codesphere/about.html", {
+    "user": data,
+    "location": location,
+    "question": questions
+  })
+
 @login_required
 def ask(request):
   return render(request, "codesphere/ask.html", {
@@ -136,14 +178,19 @@ def ask(request):
 def forum(request):
   # Output all questions to forum page
   data = Question.objects.all()
-  return render(request, "codesphere/forum.html", {"questions":data})
+  return render(request, "codesphere/forum.html", {
+    "questions": data
+  })
 
 def display(request, _question):
   # Display the question
   question = Question.objects.get(pk=_question)
   #Display all answwers with the answwered id corresponding to the questions id
   answers = Answer.objects.filter(answered__id__exact = _question)
-  return render(request, "codesphere/display.html", {"question": question, "answers": answers})
+  return render(request, "codesphere/display.html", {
+    "question": question, 
+    "answers": answers
+  })
 
 # Api for /ask.html
 # NOT REST (no JSON response)
@@ -264,6 +311,7 @@ def apiup(request, _question):
     return JsonResponse({
       "upvotes": Question.objects.get(pk=_question).upvotes,
       "upvoted": request.user.upvoted.filter(pk=_question).exists(),
+      "downvoted": request.user.downvoted.filter(pk=_question).exists(),
       "success": True
     })
   else:
@@ -273,22 +321,38 @@ def apiup(request, _question):
     })
 
 @login_required
-def apiaup(request, _question):
+def apiaup(request, _question):  
   put = json.loads(request.body)
-  print(put)
   if request.method == "PUT":
     answer = Answer.objects.get(pk=_question)
     user = request.user
     if put.get("upvote") == True:
       if not answer in request.user.answer_upvoted.all():
-        answer.upvotes = answer.upvotes + 1
-        user.answer_upvoted.add(answer)
-        print("+")
-    else:
-      if answer in request.user.answer_upvoted.all():
+        if not answer in request.user.answer_downvoted.all():
+          answer.upvotes = answer.upvotes + 1
+          user.answer_upvoted.add(answer)
+          print("+")
+        else:
+          answer.upvotes = answer.upvotes + 1
+          user.answer_downvoted.remove(answer)
+      else:
         answer.upvotes = answer.upvotes - 1
-        user.answer_upvoted.add(answer)
-        print("+")
+        user.answer_upvoted.remove(answer)
+        print("-")
+    else:
+      if not answer in request.user.answer_downvoted.all():
+        if not answer in request.user.answer_upvoted.all():
+          answer.upvotes = answer.upvotes - 1
+          user.answer_downvoted.add(answer)
+          print("+")
+        else:
+          answer.upvotes = answer.upvotes - 1
+          user.answer_upvoted.remove(answer)
+          print("+")
+      else:
+        answer.upvotes = answer.upvotes + 1
+        user.answer_downvoted.remove(answer)
+        print("-")
     try:
       answer.save()
       user.save()
@@ -302,8 +366,9 @@ def apiaup(request, _question):
     })
   elif request.method == "GET":
     return JsonResponse({
-      "upvotes": Question.objects.get(pk=_question).upvotes,
-      "upvoted": request.user.upvoted.filter(pk=_question).exists(),
+      "upvotes": Answer.objects.get(pk=_question).upvotes,
+      "upvoted": request.user.answer_upvoted.filter(pk=_question).exists(),
+      "downvoted": request.user.answer_downvoted.filter(pk=_question).exists(),
       "success": True
     })
   else:
