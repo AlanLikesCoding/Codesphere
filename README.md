@@ -27,4 +27,5 @@ Markdown parsing and profanity filter. <br>
 Admin panel, with abilities to edit the MySQL database we are using.
 
 ## License
-To be added
+[Mozilla Public License 2.0 (MPL 2.0)
+](https://choosealicense.com/licenses/mpl-2.0/)
