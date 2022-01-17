@@ -8,4 +8,4 @@ This is the changelog for this Github repo. Please use the SemVer versioning sch
 Please reference the actual changelog below for more data regarding this.
 
 ## Changelog
-**Update** 0.0.0-0 (Date: 1/17/2022): Added basic templating, and a single view as the constraints to how to use Django.
+**Update** 1.0.0-alpha (1/17/2022): Added database, basics, API, documenting.
