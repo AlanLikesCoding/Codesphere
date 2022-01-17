@@ -12,6 +12,23 @@ Inside the project folder is the django code itself. We have a codesphere folder
 
 In the directory `project/app/`, we see configuration files. The only important files here are `settings.py` and `url.py`. In `settings.py`, there are configuration variables that we won't need to change much. 
 
+## Overall Information
+### Adding a New URL Pattern
+To add a new url pattern, go to `project/codesphere/urls.py` to add a new URL pattern related to our main `codesphere` site while on the other hand, you can go to `project/app/urls.py` if you want to add a URL pattern with admin panel functionalities.
+### Adding files
+#### HTML
+To add an HTML file for the frontend of this site, procceed to `project/codesphere/templates` and add a HTML file in this directory.
+#### CSS, JS, etc.
+To add other files for the frontent of this site, you can go to `project/codesphere/static` to upload/create the files. Please note that to import the file, you will need to put the word static in the url pattern and then add the directory it is in. For example if we want to access the `codesphere/styles.css` file, then we would write `{% static 'codesphere/styles.css' %}` to access the file.
+### Adding Models
+To add a new model to this webpage, procceed to the directory `project/codesphere/models.py` and add the model there. Then, procceed to `project/codesphere/admin.py` and register the model by adding the following code:
+`admin.site.register(models.[NAME])`
+### Documenting
+For any code you write that is more complicated than receiving and request, and then rendering a page, you should write some comments on what the script is meant to do. There are 2 options to do it.
+- First, you can write one lined code and describe what each section is doing.
+- On the other hand, you can also write a large multilined comment in psuedo code before the code block to explain what you are doing.
+
+
 ## How to use Nix
 > Warning: Nix support on Replit is still under heavy development and is subject to change.
 
@@ -53,19 +70,3 @@ If you'd like to learn more about Nix, here are some great resources:
 * [Nixology](https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs) - A series of videos introducing Nix in a practical way
 * [Nix Package Manager Guide](https://nixos.org/manual/nix/stable/) - A comprehensive guide of the Nix Package Manager
 * [A tour of Nix](https://nixcloud.io/tour) - Learn the nix language itself
-## Overall Information
-### Adding a New URL Pattern
-To add a new url pattern, go to `project/codesphere/urls.py` to add a new URL pattern related to our main `codesphere` site while on the other hand, you can go to `project/app/urls.py` if you want to add a URL pattern with admin panel functionalities.
-### Adding files
-#### HTML
-To add an HTML file for the frontend of this site, procceed to `project/codesphere/templates` and add a HTML file in this directory.
-#### CSS, JS, etc.
-To add other files for the frontent of this site, you can go to `project/codesphere/static` to upload/create the files. Please note that to import the file, you will need to put the word static in the url pattern and then add the directory it is in. For example if we want to access the `codesphere/styles.css` file, then we would write `{% static 'codesphere/styles.css' %}` to access the file.
-### Adding Models
-To add a new model to this webpage, procceed to the directory `project/codesphere/models.py` and add the model there. Then, procceed to `project/codesphere/admin.py` and register the model by adding the following code:
-`admin.site.register(models.[NAME])`
-### Documenting
-For any code you write that is more complicated than receiving and request, and then rendering a page, you should write some comments on what the script is meant to do. There are 2 options to do it.
-- First, you can write one lined code and describe what each section is doing.
-- On the other hand, you can also write a large multilined comment in psuedo code before the code block to explain what you are doing.
-

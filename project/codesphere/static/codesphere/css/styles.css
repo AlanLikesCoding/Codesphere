@@ -25,7 +25,7 @@
 
 body{
   font-family: 'Inter' !important;
-  word-break: break-all;
+  /* word-break: break-all; */
   margin: 0;
 }
 

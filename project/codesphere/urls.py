@@ -19,4 +19,8 @@ urlpatterns = [
   path("api/up/q/<int:_question>", views.apiup, name="apiup"),
   path("api/up/a/<int:_question>", views.apiaup, name="apiaup"),
   path("api/search", views.apisearch, name="apisearch")
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

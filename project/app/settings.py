@@ -37,7 +37,7 @@ else:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["a8113080-5f5b-492d-8b53-48bc836c0dd6.id.repl.co", "codesphere.repl.co"]
 
 
@@ -156,8 +156,9 @@ EMAIL_PORT = 110
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = 'media/'
+STATIC_ROOT = os.path.join(BASE_DIR, "codesphere", "static/")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "codesphere", MEDIA_URL)
+MEDIA_URL = '/media/'
 
-print(MEDIA_ROOT)
+MEDIA_ROOT = os.path.join(BASE_DIR, "codesphere", "media/")
+
