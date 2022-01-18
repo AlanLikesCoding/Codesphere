@@ -14,11 +14,17 @@ Some ffeatures we hope to implement in the future include CMS on our admin platf
 To use this website, please proceed to [Codesphere.org](https://www.codesphere.org). To go further, please make an account, and then you can begin your journey with Codesphere by making an account.
 
 ### Admin
-For the admin panel on this website, please make an account, and request admin abilities from one of our already existing admins(Alan, Anvay) and we will give you admin privileges. Then, use the navbar to go to the admin panel. Please not to actually not change anything(unless banning) due to the fact that changing hashed passwords, or any database info in general, will cause chaos.
+For the admin panel on this website, please make an account, and request admin abilities from one of our already existing admins and we will give you admin privileges. Then, use the navbar to go to the admin panel. Please not to actually not change anything(unless banning) due to the fact that changing hashed passwords, or any database info in general, will cause chaos.
 
 ## Contributing
 
 For the contributing section of this website, please refer to `CONTRIBUTING.md` for more data.
+
+### Current Members of the Codesphere Organization
+- *Alan* - CEO, Full Stack
+- *Anvay* - CTO, Full Stack
+- *Alex* - COO, Frontend
+- *Tim* - CDO, Frontend
 
 ## Features
 Login system, and regsiter system with email verification. <br>
