@@ -1,11 +1,10 @@
 {% extends "codesphere/layout.html" %} {% block body %}
-{% csrf_token %}
 <section class="h-100">
 	<div class="container py-5 h-100">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col col-lg-9 col-xl-7">
-				<div class="card">
-					<div class="rounded-top text-white d-flex flex-row codesphere-grad-dark" style="height:200px;">
+				<div class="card" style="border-radius: 10px;">
+					<div class="text-white d-flex flex-row codesphere-grad-dark" style="height:200px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
 						<div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
 							<img src="{{ user.picture }}" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 160px; z-index: 1">
             </div>
@@ -29,8 +28,22 @@
           </div>
           <div class="card-body p-4 text-black">
             <div class="mb-5">
-              <p class="lead fw-normal mb-1">About</p>
-              {{ user.bio }}
+              <form action="{% url 'about' user.pk %}" method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                <p class="lead fw-normal mb-1">Edit</p>
+                <label><b>Upload a Profile Picture</b></label><br>
+                {{ form.upload }}<hr>
+                <label><b>Bio<b></label><br>
+                {{ form.bio }}
+                <br>
+                <input type="submit" value="Save" class="btn codesphere-grad-dark">
+                {% if message %}
+                  <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                  </div>
+                {% endif %}
+              </form>
             </div>
             <div class="recent" style="overflow: scroll; height: 307px;">
               <div class="d-flex justify-content-between align-items-center mb-4">
@@ -51,5 +64,5 @@
     </div>
   </div>
 </section>
-
+</form>
 {% endblock %}

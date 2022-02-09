@@ -1,21 +1,41 @@
-{% extends "codesphere/layout.html" %} 
-
-{% block body %}
+{% extends "codesphere/layout.html" %} {% block body %}
 <div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="card post">
+				<div class="card-body">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 	<div class="row">
 		<div class="col-9">
 			{% for i in questions %}
-			<div class="card">
+			<div class="card post">
 				<div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
+          <div class="upvote">
+						<span class="num">{{ i.upvotes }}</span>
+            <div class="ctrl-btn">
+              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
+              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
+            </div>
+          </div>
+          <div class="user-display">
+            <img src="{{ i.asker.picture }}" width="42" height="42">
+            <div class="user-info text-muted">{{ i.asker.username }}<br><div class="time">{{ i.timestamp }}</div></div><br>
+          </div>
 					<span class="display-4">{{ i.question }}</span>
-            <span class="text-muted">{{ i.asker.username }}</span>
             <p class="lead">{{ i.content|truncatechars:90 }}</p>
           </div>
       </div>
   {% endfor %} 
   </div>
   <div class="col-3">
-      <div class="card">
+      <div class="card post">
         <div class="card-body">
           <div class="row">
             <div class="col-6">

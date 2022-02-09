@@ -18,7 +18,7 @@ import platform
 # Logging
 LOGGING = {
   'version': 1,
-  'disable_existing_loggers': True
+  'disable_existing_loggers': False
 }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -38,7 +38,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
-ALLOWED_HOSTS = ["a8113080-5f5b-492d-8b53-48bc836c0dd6.id.repl.co", "codesphere.repl.co"]
+ALLOWED_HOSTS = ["a8113080-5f5b-492d-8b53-48bc836c0dd6.id.repl.co", "codesphere.repl.co", "*"]
 
 
 # Application definition

@@ -5,7 +5,6 @@
         pkgs.python39Packages.setuptools
         pkgs.python39Packages.django
         pkgs.python39Packages.mysqlclient
-        pkgs.python39Packages.pillow
         pkgs.unzip
 	];
 }

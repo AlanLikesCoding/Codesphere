@@ -1,6 +1,7 @@
 
 # External Libaries(outside of Django)
 import json
+import os
 # Geolocation
 from json import load
 from urllib.request import urlopen
@@ -40,6 +41,7 @@ from .models import User
 from .forms import LoginForm
 from .forms import RegisterForm
 from .forms import AskForm
+from .forms import AboutForm
 
 # Basic
 import os
@@ -59,7 +61,7 @@ print("Processor: " + uname.processor)
 # System Start
 print(Colors.GREEN + Colors.BOLD + "[SYSTEM]" + Colors.ENDC + " System has started to run, the Codesphere server is up.")
 
-print(Colors.GREEN + "[DJANGO SYSTEM]" + Colors.ENDC)
+print(Colors.GREEN + Colors.BOLD + "[DJANGO SYSTEM]" + Colors.ENDC)
 
 def index(request):
     question = Question.objects.get(pk = 1)
@@ -153,15 +155,60 @@ def activate(request, uidb64, token):
 def about(request, _user):
   data = User.objects.get(pk = _user)
   questions = Question.objects.filter(asker = data)
+  # Get user location for the bio
   url = 'https://ipinfo.io/json'
   res = urlopen(url)
-  #response from url(if res==None then check connection)
   location = load(res)
-  #will load the json response into data
-  if(request.method == "POST"):
-    bio = request.POST['bio']
-    data.bio = bio
-    data.save()
+  # Check if user is editing their profile
+  if (request.method == "POST"):
+    user = request.user
+    # Check if user is valid
+    if user is not None and user.pk == _user:
+      form = AboutForm(request.POST, request.FILES)
+      if form.is_valid():
+        # Check if use uploaded file
+        if "upload" in request.FILES:
+          # Filefield
+          picture = request.FILES["upload"]
+          # Paths
+          base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+          path = "/media/profile/" + str(_user) + ".jpeg"
+          # Create File
+          directory = os.path.join(base, "codesphere" + path)
+          open(directory, "wb+").write(picture.file.read())       
+          user.picture = path
+        # Get bio data
+        bio = form.cleaned_data["bio"]
+        user.bio = bio
+        # Save the use form
+        user.save()
+
+        return render(request, "codesphere/edit_about.html", {
+          "user": data,
+          "location": location,
+          "question": questions,
+          "form": AboutForm({"bio": request.user.bio})
+        })
+      else:
+        print("form no valuid")
+    # If there is a proccessing error
+    else:
+      return render(request, "codesphere/about.html", {
+        "user": data,
+        "location": location,
+        "question": questions,
+        "form": AboutForm({"bio": request.user.bio}),
+        "message": "Error, we have had some trouble proccessing you uploads, please try again later..."
+      })
+  # Check if this is the profile of the user
+  if request.user is not None and request.user.pk == _user:
+    return render(request, "codesphere/edit_about.html", {
+      "user": data,
+      "location": location,
+      "question": questions,
+      "form": AboutForm({"bio": request.user.bio})
+    })
+  # If user isn't logged in
   return render(request, "codesphere/about.html", {
     "user": data,
     "location": location,

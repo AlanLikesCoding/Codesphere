@@ -20,7 +20,3 @@ urlpatterns = [
   path("api/up/a/<int:_question>", views.apiaup, name="apiaup"),
   path("api/search", views.apisearch, name="apisearch")
 ] 
-
-if settings.DEBUG:
-  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-  urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

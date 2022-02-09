@@ -22,3 +22,9 @@ class Colors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+# File renaming
+def filename(instance, filename):
+  filebase, extension = filename.split('.')
+  print("filename changed")
+  return 'profile/%s.%s' % (instance.pk, extension)

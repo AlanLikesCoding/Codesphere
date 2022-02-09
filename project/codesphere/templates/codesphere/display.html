@@ -1,60 +1,69 @@
-{% extends "codesphere/layout.html" %}
-
-{% block body %}
+{% extends "codesphere/layout.html" %} {% block body %}
 <div class="container">
   <div class="main">
-    <div class="card">
-        <div class="card-body upvote-container">
-          <div class="upvote">
+    <div class="card post">
+      <div class="card-body">
+        <div class="upvote">
             <span class="num">{{ question.upvotes }}</span>
             <div class="ctrl-btn">
-            <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
-            <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
+              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
+              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
             </div>
-          </div>
-          <div class="q">
-            <span class="display-4">{{ question.question }}</span><br>
-            <span class="text-muted">{{ question.asker.username }}</span> | <span class="text-muted">{{ question.timestamp }}</span>
-            <p class="lead">{{ question.content }}</p>
-          </div>
         </div>
+        <div class="user-display">
+            <img src="{{ question.asker.picture }}" width="42" height="42">
+            <div class="user-info text-muted">
+              {{ question.asker.username }}<br>
+              <div class="time">{{ question.timestamp }}</div>
+            </div>
+            <br>
+        </div>
+        <h2 class="display-2">{{ question.question }}</h1>
+        <p class="lead">{{ question.content }}</p>
+        </div>
+      </div>
     </div>
-  </div>
-
-  {% for i in answers %}
-  <div class="main">
-    <div class="card">
-        <div class="card-body upvote-container">
-          <div class="upvote">
-             <span class="num">{{ i.upvotes }}</span>
+{% for i in answers %}
+<div class="main">
+   <div class="card post">
+      <div class="card-body">
+         <div class="upvote">
+            <span class="num">{{ i.upvotes }}</span>
             <div class="ctrl-btn">
-              <button class="btn-upvote" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
-              <button class="btn-downvote" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}>▼</button>
+               <button class="btn-upvote" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
+               <button class="btn-downvote" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}>▼</button>
             </div>
-          </div>
-          <div class="q">
-            <span class="text-muted">{{ i.replier.username }} | {{ i.timestamp}}</span>
-            <p class="lead">{{ i.content }}</p>
-          </div>
-        </div>
-    </div>
-  </div>
-  {% endfor %} 
-  <hr>
-    {% if request.user %}
-    <div class="card">
-    <div class="card-body">
+         </div>
+         <div class="user-display">
+            <img src="{{ i.replier.picture }}" width="42" height="42">
+            <div class="user-info text-muted">
+               {{ i.replier.username }}<br>
+               <div class="time">{{ i.timestamp }}</div>
+            </div>
+            <br>
+         </div>
+         <div class="post" style="padding-top: 20px;">
+          <p class="lead">{{ i.content }}</p>
+         </div>
+      </div>
+   </div>
+</div>
+{% endfor %} 
+<hr>
+{% if request.user %}
+<div class="card">
+   <div class="card-body">
       <span class="display-4">Your answer</span><br>
       <span class="lead">Have an answer? Type it down in the textbox below and support CodeSphere today!</span>
-      <hr><form action="{% url 'apians' %}" method="POST">
-        {% csrf_token %}
-        <textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea><br>
-        <input type="hidden" name="id" value="{{ question.id }}">
-        <input type="submit" class="btn btn-primary" value="Answer">
+      <hr>
+      <form action="{% url 'apians' %}" method="POST">
+         {% csrf_token %}
+         <textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea><br>
+         <input type="hidden" name="id" value="{{ question.id }}">
+         <input type="submit" class="btn btn-primary" value="Answer">
       </form>
-    </div>
-  </div>
-  {% endif %}
-
+   </div>
+</div>
+{% endif %}
 </div>
 {% endblock %}

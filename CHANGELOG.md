@@ -9,3 +9,5 @@ Please reference the actual changelog below for more data regarding this.
 
 ## Changelog
 **Update** 1.0.0-alpha (1/17/2022): Added database, basics, API, documenting.
+**Update** 1.1.0-alpha (1/17/2022): Added the use information(about)
+ system, and added better CSS as well as fixing the bio system.

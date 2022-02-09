@@ -2,40 +2,40 @@
 
 {% block body %}
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-    <div class="card-group form-wrapper">
-      <div class="card">
-        <div class="card-body form">
-          <form action="{% url 'register' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-              <label>Username: </label><br>
-              {{ form.username}}
-            </div>
-            <div class="form-group">
-              <label>Email: </label><br>
-              {{ form.email }}
-            </div>
-            <div class="form-group">
-              <label>Password: </label><br>
-              {{ form.password }}
-            </div>
-            <div class="form-group">
-              <label>Confirm Password: </label><br>
-              {{ form.confirmation }}
-            </div><br>
-            <input class="btn btn-primary" id="btn" type="submit" value="Register"><hr>
-            <small class="text-muted">Already have an account? <a href="{% url 'login' %}">Log In here.</a></small>
-          </form>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body form-desc">
-          <h5 class="card-title display-4 white">What is Codesphere.org?</h5>
-          <p class="card-text text-muted"><small><i>Codesphere.org a fast and user friendly online user integrated environment. Begin your adventure through coding without any worries about setting things up.</i></small></p>
+    <div class="container px-5 h-100">
+      <div class="mx-5 px-5 py-5">
+        <div class="card mx-auto col-6" style="background-color: #f8f9fa">
+          <div class="card-body form mx-5">
+            <h2 class="display-3">Register</h2>
+            <form action="{% url 'register' %}" class="list-group" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <label>Username: </label><br>
+                {{ form.username}}
+              </div>
+              <div class="form-group">
+                <label>Email: </label><br>
+                {{ form.email }}
+              </div>
+              <div class="form-group">
+                <label>Password: </label><br>
+                {{ form.password }}
+              </div>
+              <div class="form-group">
+                <label>Confirm Password: </label><br>
+                {{ form.confirmation }}
+              </div><br>
+              <input class="btn codesphere-grad-dark" id="btn" type="submit" value="Register"><hr>
+              <small class="text-muted">Already have an account? <a href="{% url 'login' %}">Log In here.</a></small>
+              {% if message %}
+                <div class="alert alert-warning" role="alert">
+                  {{ message }}
+                </div>
+              {% endif %}
+            </form>
+          </div>
         </div>
       </div>
     </div>
+
 {% endblock %}
