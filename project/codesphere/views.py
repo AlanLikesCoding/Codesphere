@@ -492,7 +492,7 @@ def apiqcomment(request, _question):
 
 def apiacomment(request, _answer):
   url = "display";
-  __question = Answer.objects.get(pk=_answer).answered.pk
+  _question = Answer.objects.get(pk=_answer).answered.pk
   if(request.method == "POST"):
     _user = request.user
     form = CommentForm(request.POST)
