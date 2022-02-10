@@ -37,3 +37,6 @@ class AboutForm(forms.Form):
   # Bio form
   bio = forms.CharField(required=False, widget=forms.Textarea(attrs={"placeholder": "Talk about yourself for others to know you better...", "rows": 12}))
   upload = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={"name": "upload"}))
+
+class CommentForm(forms.Form):
+  content = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter your comment here...","class":"form-control", "rows": 12}))

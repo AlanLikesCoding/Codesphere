@@ -36,12 +36,15 @@ from django.template.loader import render_to_string, get_template
 from .models import Question
 from .models import Answer
 from .models import User
+from .models import QuestionComment
+from .models import AnswerComment
 
 # Django Forms
 from .forms import LoginForm
 from .forms import RegisterForm
 from .forms import AskForm
 from .forms import AboutForm
+from .forms import CommentForm
 
 # Basic
 import os
@@ -234,9 +237,27 @@ def display(request, _question):
   question = Question.objects.get(pk=_question)
   #Display all answwers with the answwered id corresponding to the questions id
   answers = Answer.objects.filter(answered__id__exact = _question)
+  # Get question comments
+  qcomments = QuestionComment.objects.filter(question__id__exact = _question)
+  id_list = []
+  for i in answers:
+    append_val = AnswerComment.objects.filter(answer__id__exact = i.pk)
+    if len(append_val) > 1:
+      for j in append_val:
+        if hasattr(j, "pk"):
+          id_list.append(j.pk)
+    else:
+      if hasattr(append_val.first(), "pk"):
+        id_list.append(append_val.first().pk)
+  # Get answer comments
+  acomments = AnswerComment.objects.filter(id__in=id_list)
+  print(acomments)
   return render(request, "codesphere/display.html", {
     "question": question, 
-    "answers": answers
+    "answers": answers,
+    "comment": CommentForm(),
+    "qcomments": qcomments,
+    "acomments": acomments
   })
 
 # Api for /ask.html
@@ -458,3 +479,25 @@ def apisearch(request):
         "answers": answer_json
       })
 
+def apiqcomment(request, _question):
+  url = "display";
+  if(request.method == "POST"):
+    _user = request.user
+    form = CommentForm(request.POST)
+    if form.is_valid():
+      _content = form.cleaned_data["content"]
+      comment = QuestionComment.objects.create(content = _content, commenter = _user, question = Question.objects.get(pk=_question))
+      comment.save()
+  return redirect(reverse(url, kwargs={"_question": _question}))
+
+def apiacomment(request, _answer):
+  url = "display";
+  __question = Answer.objects.get(pk=_answer).answered.pk
+  if(request.method == "POST"):
+    _user = request.user
+    form = CommentForm(request.POST)
+    if form.is_valid():
+      _content = form.cleaned_data["content"]
+      comment = AnswerComment.objects.create(content = _content, commenter = _user, answer = Answer.objects.get(pk=_answer))
+      comment.save()
+  return redirect(reverse(url, kwargs={"_question": _question}))

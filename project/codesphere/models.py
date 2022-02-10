@@ -68,3 +68,29 @@ class Answer(models.Model):
 
   # Foreign key for which question this answer answers
   answered = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
+
+# Model for a comment on a question
+class QuestionComment(models.Model):
+  # User
+  commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="question_commenter")
+  #Content of the question
+  content = models.TextField()
+
+  # Timestamp of last time the model has been edited
+  timestamp = models.DateTimeField(auto_now=True)
+  
+  # Link to former question
+  question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="question_relation")
+
+# Model for a comment on a question
+class AnswerComment(models.Model):
+  # User
+  commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="answer_commenter")
+  #Content of the question
+  content = models.TextField()
+
+  # Timestamp of last time the model has been edited
+  timestamp = models.DateTimeField(auto_now=True)
+  
+  # Link to former question
+  answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name="answer_relation")

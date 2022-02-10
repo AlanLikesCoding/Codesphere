@@ -1,10 +1,10 @@
 {% extends "codesphere/layout.html" %} {% block body %}
 <div class="container">
-  <div class="main">
-    <div class="card post">
-      <div class="card-body">
-        <div class="upvote">
-            <span class="num">{{ question.upvotes }}</span>
+	<div class="main">
+		<div class="card post">
+			<div class="card-body">
+				<div class="upvote">
+					<span class="num">{{ question.upvotes }}</span>
             <div class="ctrl-btn">
               <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
               <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
@@ -20,9 +20,40 @@
         </div>
         <h2 class="display-2">{{ question.question }}</h1>
         <p class="lead">{{ question.content }}</p>
+        <hr />
+        <ul class="list-group list-group-horizontal" style="float: right;">
+          <li class="list-group-item">Save</li>
+          <li class="list-group-item">Report</li>
+          <button class="btn list-group-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">Comments</button>
+        </ul>
+        <div class="col-3 mt-3">
+          <form action="{% url 'apiqcomment' question.id %}" method="POST">
+            <div class="input-group mh-25">
+              {% csrf_token %}
+              {{ comment.content }}
+              <input type="submit" class="btn btn-primary">
+            </div>
+          </form>
         </div>
+        <br>
+        <div class="comment collapse" id="collapse">
+          {% for i in qcomments %}
+          <div class="user-display">
+            <img src="{{ i.commenter.picture }}" width="42" height="42">
+            <div class="user-info text-muted">
+              {{ i.commenter.username }}<br>
+              <div class="time">{{ i.timestamp }}</div>
+            </div>
+            <br>
+          </div>
+          <span class="text-muted">
+            {{ i.content }}
+          </span>
+          <hr>
+          {% endfor %}
       </div>
     </div>
+  </div>
 {% for i in answers %}
 <div class="main">
    <div class="card post">
@@ -42,9 +73,43 @@
             </div>
             <br>
          </div>
-         <div class="post" style="padding-top: 20px;">
+         <div style="padding-top: 20px;">
           <p class="lead">{{ i.content }}</p>
          </div>
+         <hr />
+        <ul class="list-group list-group-horizontal" style="float: right;">
+          <li class="list-group-item">Save</li>
+          <li class="list-group-item">Report</li>
+          <button class="btn list-group-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{i.id}}" aria-expanded="false" aria-controls="collapse">Comments</button>
+        </ul>
+      <div class="col-3 mt-3">
+        <form action="{% url 'apiacomment' i.id %}" method="POST">
+          <div class="input-group mh-25">
+            {% csrf_token %}
+            {{ comment.content }}
+            <input type="submit" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
+      <br>
+      <div class="comment collapse" id="collapse_{{i.id}}">
+        {% for j in acomments %}
+        {% if j.answer.id == i.pk %}
+        <div class="user-display">
+          <img src="{{ j.commenter.picture }}" width="42" height="42">
+          <div class="user-info text-muted">
+            {{ j.commenter.username }}<br>
+            <div class="time">{{ j.timestamp }}</div>
+          </div>
+          <br>
+        </div>
+        <span class="text-muted">
+          {{ j.content }}
+        </span>
+        <hr>
+        {% endif %}
+        {% endfor %}
+    </div>
       </div>
    </div>
 </div>

@@ -36,3 +36,8 @@ admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Question, QuestionAdmin)
 # Answer models
 admin.site.register(models.Answer, AnswerAdmin)
+# Comment models
+# Question
+admin.site.register(models.QuestionComment)
+# Answer
+admin.site.register(models.AnswerComment)
