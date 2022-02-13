@@ -605,7 +605,6 @@ def apiacomment(request, _answer):
 def apiqedit(request, _question):
   _user = request.user
   id = _question
-  print(_question)
   url = "display";
   question = Question.objects.get(pk=_question)
   if request.method == "POST":
@@ -619,4 +618,16 @@ def apiqedit(request, _question):
         question.tags = _tags
         question.content = _content
         question.save()
+  return redirect(reverse(url, kwargs={"_question": id}))
+
+def apiaedit(request, _answer):
+  _user = request.user
+  url = "display";
+  answer = Answer.objects.get(pk=_answer)
+  id = answer.answered.pk
+  if request.method == "POST":
+    if _user.pk == answer.replier.pk:
+      _content = request.POST["content"]
+      answer.content = _content
+      answer.save()
   return redirect(reverse(url, kwargs={"_question": id}))

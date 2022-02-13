@@ -14,3 +14,4 @@ Please reference the actual changelog below for more data regarding this.
 **Update** 1.2.0-alpha (2/12/2022): Added a commetning system to the question and comments, more CSS revamping and lots of frontend changes.
 **Update** 1.2.1-alpha (2/12/2022): Bug fixes to the commenting system, documenting fixes.
 **Update** 1.3.1-alpha (2/12/2022): New UI updates with more of a glassy aesthetic. Editing questions and also tagging and tag filtering. Also profanity filtering and markdown have been added.
+**Update** 1.4.1-alpha (2/12/2022): Editing answers has now been implemented. There are also minor CSS changes for buttons that had a few issues.

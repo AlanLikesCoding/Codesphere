@@ -122,9 +122,33 @@
           {% if question.asker.pk == user.pk %}
           <li class="d-inline rounded-pill codesphere-btn"><i class="icon-g rounded-circle bi bi-check-lg"></i> Correct</li>
           {% endif %}
+          {% if request.user.pk == i.replier.pk %}
+          <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#answer_{{ i.id }}"><i class="icon-g rounded-circle bi bi-pencil-square"></i> Edit</li>
+          {% endif %}
           <li class="d-inline rounded-pill codesphere-btn"><i class="icon-b rounded-circle bi bi-bookmark"></i> Save</li>
           <li class="d-inline rounded-pill codesphere-btn"><i class="icon-r rounded-circle bi bi-flag"></i> Report</li>
           <button class="d-inline codesphere-btn rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{i.id}}" aria-expanded="false" aria-controls="collapse"><i class="icon-p rounded-circle bi bi-chat-dots"></i> Comments</button>
+        </div>
+        <div class="modal fade" id="answer_{{ i.id }}" tabindex="-1" aria-labelledby="{{ i.id }}Label" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="{% url 'apiaedit' i.pk %}" method="post">
+                <div class="modal-body">
+                  {% csrf_token %}
+                  <textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea><br>
+                  <input type="hidden" name="id" value="{{ question.id }}">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn codesphere-fill-btn">Save changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       <div class="col-lg-3 mt-3">
         <form action="{% url 'apiacomment' i.id %}" method="POST">
@@ -169,7 +193,7 @@
          {% csrf_token %}
          <textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea><br>
          <input type="hidden" name="id" value="{{ question.id }}">
-         <input type="submit" class="codesphere-fill-btn" value="Answer">
+         <input type="submit" class="btn codesphere-fill-btn" value="Answer">
       </form>
    </div>
 </div>
