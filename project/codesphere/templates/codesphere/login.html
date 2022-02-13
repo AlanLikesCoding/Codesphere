@@ -20,7 +20,8 @@
                   <br>
                   <input class="btn codesphere-grad-dark" id="btn" type="submit" value="Login">
                   <hr>
-                  Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+                  <small class="text-muted">Don't have an account? <a href="{% url 'register' %}">Register here.</a></small>
+                  <small class="text-muted">Forgot your passcode? <a href="{% url 'reset' %}">Reset it here</a></small>
                   {% if message %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert"" role="alert">
                       {{ message }}

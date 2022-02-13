@@ -7,11 +7,15 @@
       <form action="{% url 'apiask' %}" method="POST">
       {% csrf_token %}
         <div class="header-container">
-          {{ form.question }}<!--<input name="question" placeholder="Enter yuro question here..." id="header" type="text">--><span class="underline"></span>
+          {{ form.question }}<span class="underline"></span>
+        </div><br>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="tags">
+          {{ form.tags }}
+          <span class="btn codesphere-bg-dark" onclick="addTag()">Add Tag</span>
         </div>
-        <br><br>
-        <!-- <input name="content" class="form-control" type="text"><br> -->
-        <!--<textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea>-->{{ form.content }}<hr>
+        <div id="display"></div>
+        {{ form.content }}<hr>
         <input type="submit" class="btn btn-primary" value="Ask">
       </form>
     </div>

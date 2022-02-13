@@ -1,13 +1,13 @@
 {% extends "codesphere/layout.html" %} {% block body %}
 <div class="container">
 	<div class="main">
-		<div class="card post">
+		<div class="card shadow-sm post">
 			<div class="card-body">
 				<div class="upvote">
 					<span class="num">{{ question.upvotes }}</span>
             <div class="ctrl-btn">
-              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
-              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
+              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
+              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
             </div>
         </div>
         <div class="user-display">
@@ -18,20 +18,61 @@
             </div>
             <br>
         </div>
-        <h2 class="display-2">{{ question.question }}</h1>
-        <p class="lead">{{ question.content }}</p>
+        <h3>{{ question.question }}</h3>
+        <p class="parse">{{ question.content }}</p>
         <hr />
-        <ul class="list-group list-group-horizontal" style="float: right;">
-          <li class="list-group-item">Save</li>
-          <li class="list-group-item">Report</li>
-          <button class="btn list-group-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">Comments</button>
-        </ul>
-        <div class="col-3 mt-3">
+        <div style="float: right;" class="mb-1">
+          {% if question.asker.pk == user.pk %}
+          <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#question_{{ question.id }}"><i class="icon-g rounded-circle bi bi-pencil-square"></i> Edit</li>
+          {% endif %}
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-b rounded-circle bi bi-bookmark"></i> Save</li>
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-r rounded-circle bi bi-flag"></i> Report</li>
+          <button class="d-inline codesphere-btn rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse"><i class="icon-p rounded-circle bi bi-chat-dots"></i> Comments</button>
+        </div>
+        <div class="modal fade" id="question_{{ question.id }}" tabindex="-1" aria-labelledby="{{ question.id }}Label" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="{% url 'apiqedit' question.pk %}" method="post">
+                <div class="modal-body">
+                  <div class="header-container">
+                    {% csrf_token %}
+                    {{ ask.question }}<span class="underline"></span>
+                  </div><br>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="tags">
+                    {{ ask.tags }}
+                    <span class="btn codesphere-fill-btn" onclick="addTag()">Add Tag</span>
+                  </div>
+                  <div id="display">
+                  {% for i in tags %}
+                  {% if i != "" %}
+                  <div class="badge bg-secondary me-1">
+                    {{ i }}
+                    <button type='button' class='btn-close' aria-label='Close' onclick='closeTag(this.parentElement)'></button>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  </div>
+                  {{ ask.content }}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn codesphere-fill-btn">Save changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 mt-3">
           <form action="{% url 'apiqcomment' question.id %}" method="POST">
             <div class="input-group mh-25">
               {% csrf_token %}
               {{ comment.content }}
-              <input type="submit" class="btn btn-primary">
+              <input type="submit" class="codesphere-fill-btn">
             </div>
           </form>
         </div>
@@ -56,13 +97,13 @@
   </div>
 {% for i in answers %}
 <div class="main">
-   <div class="card post">
+   <div class="card shadow-sm post">
       <div class="card-body">
          <div class="upvote">
             <span class="num">{{ i.upvotes }}</span>
             <div class="ctrl-btn">
-               <button class="btn-upvote" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
-               <button class="btn-downvote" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}>▼</button>
+               <button class="btn-upvote" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
+               <button class="btn-downvote" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
             </div>
          </div>
          <div class="user-display">
@@ -74,20 +115,23 @@
             <br>
          </div>
          <div style="padding-top: 20px;">
-          <p class="lead">{{ i.content }}</p>
+          <p class="parse">{{ i.content }}</p>
          </div>
          <hr />
-        <ul class="list-group list-group-horizontal" style="float: right;">
-          <li class="list-group-item">Save</li>
-          <li class="list-group-item">Report</li>
-          <button class="btn list-group-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{i.id}}" aria-expanded="false" aria-controls="collapse">Comments</button>
-        </ul>
-      <div class="col-3 mt-3">
+        <div style="float: right;" class="mb-1">
+          {% if question.asker.pk == user.pk %}
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-g rounded-circle bi bi-check-lg"></i> Correct</li>
+          {% endif %}
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-b rounded-circle bi bi-bookmark"></i> Save</li>
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-r rounded-circle bi bi-flag"></i> Report</li>
+          <button class="d-inline codesphere-btn rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{i.id}}" aria-expanded="false" aria-controls="collapse"><i class="icon-p rounded-circle bi bi-chat-dots"></i> Comments</button>
+        </div>
+      <div class="col-lg-3 mt-3">
         <form action="{% url 'apiacomment' i.id %}" method="POST">
           <div class="input-group mh-25">
             {% csrf_token %}
             {{ comment.content }}
-            <input type="submit" class="btn btn-primary">
+            <input type="submit" class="codesphere-fill-btn">
           </div>
         </form>
       </div>
@@ -118,14 +162,14 @@
 {% if request.user %}
 <div class="card">
    <div class="card-body">
-      <span class="display-4">Your answer</span><br>
-      <span class="lead">Have an answer? Type it down in the textbox below and support CodeSphere today!</span>
+      <h3>Your answer</h3>
+      <span>Have an answer? Type it down in the textbox below and support CodeSphere today!</span>
       <hr>
       <form action="{% url 'apians' %}" method="POST">
          {% csrf_token %}
          <textarea name="content" class="form-control" rows="12" placeholder="Please specify your question here..."></textarea><br>
          <input type="hidden" name="id" value="{{ question.id }}">
-         <input type="submit" class="btn btn-primary" value="Answer">
+         <input type="submit" class="codesphere-fill-btn" value="Answer">
       </form>
    </div>
 </div>

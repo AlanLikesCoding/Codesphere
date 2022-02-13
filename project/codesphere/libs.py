@@ -23,8 +23,8 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-# File renaming
-def filename(instance, filename):
-  filebase, extension = filename.split('.')
-  print("filename changed")
-  return 'profile/%s.%s' % (instance.pk, extension)
+# Tag class
+class Tag(object):
+  def __init__(self, tag, pk):
+    self.tag = tag
+    self.pk = pk

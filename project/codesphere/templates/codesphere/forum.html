@@ -2,63 +2,88 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-			<div class="card post">
+			<div class="card shadow-sm post">
 				<div class="card-body">
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="Search">
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="codesphere-fill-btn" type="submit">Search <i class="bi bi-arrow-right"></i></button>
           </div>
         </div>
       </div>
     </div>
   </div>
 	<div class="row">
-		<div class="col-9">
+		<div class="col-lg-9">
 			{% for i in questions %}
-			<div class="card post">
+			<div class="card shadow-sm post">
 				<div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
           <div class="upvote">
 						<span class="num">{{ i.upvotes }}</span>
             <div class="ctrl-btn">
-              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}>▲</button><br>
-              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}>▼</button>
+              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
+              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
             </div>
           </div>
           <div class="user-display">
             <img src="{{ i.asker.picture }}" width="42" height="42">
             <div class="user-info text-muted">{{ i.asker.username }}<br><div class="time">{{ i.timestamp }}</div></div><br>
           </div>
-					<span class="display-4">{{ i.question }}</span>
-            <p class="lead">{{ i.content|truncatechars:90 }}</p>
+					<h3>{{ i.question }}</h3>
+            {% for j in tag %}
+            {% if j.pk == i.pk %}
+            <span class="badge bg-secondary">{{ j.tag }}</span>
+            {% endif %}
+            {% endfor %}
+            <p class="parse">{{ i.content|truncatechars:90 }}</p>
           </div>
       </div>
   {% endfor %} 
   </div>
-  <div class="col-3">
-      <div class="card post">
+  <div class="col-lg-3">
+      <div class="card shadow-sm post">
+        
         <div class="card-body">
           <div class="row">
-            <div class="col-6">
+            <div class="col-lg-12">
               <span>Views</span><br>
-              <span class="lead">60</span>
-            </div>
-            <div class="col-6">
-              <span>Views</span><br>
-              <span class="lead">60</span>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Add a tag" id="tags">
+                <button class="codesphere-fill-btn" onclick="addTag()">Tag</button>
+                <input type="hidden" id="tags_input" name="tag">
+              </div>
+              <div id="display"></div>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
-              <span>Views</span><br>
-              <span class="lead">60</span>
+            <div class="col-lg-12">
+              <span>Filter</span><br>
+              <select id="filter" class="form-select" aria-label="Default select example">
+                <option value="1">Most Recent</option>
+                <option value="2">Most Likes</option>
+                <option value="3">Least Recent</option>
+                <option value="4">Least Recent</option>
+              </select>
             </div>
-            <div class="col-6">
-              <span>Views</span><br>
-              <span class="lead">60</span>
+          </div>
+          <div class="row">
+            <div class="col-lg-12"><br>
+              <button class="codesphere-fill-btn mb-3 form-control" onclick="filter()">Filter</button>
             </div>
           </div>
         </div>
       </div>
+      <div class="card shadow-sm post">
+        <ul class="list-group list-group-flush">
+          {% for i in popular %}
+          <li class="list-group-item">
+            <div class="user-display">
+              <img src="{{ i.asker.picture }}" width="42" height="42">
+              <div class="user-info text-muted">{{ i.asker.username }}<br><div class="time">{{ i.timestamp }}</div></div><br>
+            </div>
+            {{ i.question }}</li>
+          {% endfor %}
+        </ul>
+      </div>          
     </div>
   </div>
 </div>

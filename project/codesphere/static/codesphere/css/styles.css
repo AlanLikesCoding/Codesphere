@@ -6,7 +6,7 @@
   --extra-dark: rgb(129, 39, 247);
   --dark: #B983FF;
   --medium: #7992EA;
-  --light: #9AACEE;
+  --light: #65C8FF;
   --hilight: #94DAFF;
   --gradient-dark: linear-gradient(90deg, var(--dark) 0%, var(--medium) 100%);
   --gradient-light: linear-gradient(90deg, var(--hilight) 0%, var(--light) 100%);
@@ -14,18 +14,22 @@
 
 .codesphere-bg-extra-dark {
   background-color: var(--extra-dark) !important;
+  color: white !important;
 }
 
 .codesphere-bg-dark {
   background-color: var(--dark) !important;
+  color: white !important;
 }
 
 .codesphere-bg-medium {
   background-color: var(--medium) !important;
+  color: white !important;
 }
 
 .codesphere-bg-light {
   background-color: var(--light) !important;
+  color: white !important;
 }
 
 .codesphere-bg-highlight {
@@ -95,13 +99,38 @@ input[type=file]::file-selector-button {
 .codesphere-img {
   height: 609px;
 }
+
+.codesphere-btn {
+  padding: 10px;
+  transition-duration: 0.4s;
+  background-color: white;
+  border: none;
+}
+
+.codesphere-fill-btn {
+  background-color: var(--extra-dark);
+  color: #DCD8FA;
+  transition: 0.4s;
+  border-radius: 5px;
+  border: none;
+}
+
+.codesphere-fill-btn:hover {
+  background-color: #DCD8FA;
+  color: var(--extra-dark);
+}
+
+.codesphere-btn:hover {
+  background-color: #F2F2F2;
+}
+
 .banner{
   margin-right: 9em !important;
 }
 
 .card{
-  margin: 1em;
-  box-shadow: 2px 1px 9px rgba(0, 0, 0, 0.25);
+  margin: 0.5em;
+  border-radius: 16px;
 }
 
 .user-display{
@@ -110,7 +139,6 @@ input[type=file]::file-selector-button {
 
 .user-display img{
   float: left;
-  border-radius: 50%;
 }
 
 .user-display .user-info{
@@ -127,6 +155,50 @@ input[type=file]::file-selector-button {
   color: rgb(0, 0, 0)!important;
 }
 
+.icon-p {
+  background-color: #DCD8FA;
+  color: #9486FF;
+  padding: 5px 7px 7px;
+}
+
+.icon-g {
+  background-color: #D8FAE1;
+  color: #4EE85E;
+  padding: 5px 7px;
+}
+
+.icon-r {
+  background-color: #FAD8F6;
+  color: #FA7EEB;
+  padding: 5px 7px;
+}
+
+.icon-b {
+  background-color: #C6F2FF;
+  color: #2BD0FF;
+  padding: 5px 7px;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    margin: 0em !important;
+    padding: 0px !important;
+    width: 100%;
+  }
+  [class*="col-"] {
+    width: 100% !important;
+    margin: 0em !important;
+    padding: 0em !important;
+  }
+  .col {
+    width: 100% !important;
+    margin: 0em !important;
+    padding: 0em !important;
+  }
+  .card {
+    width: 100% !important;
+  }
+}
 .header-container{
   position: relative;
   display: inline-block;
@@ -194,7 +266,7 @@ input[type=file]::file-selector-button {
   border: none;
   background-color: white;
   padding: none;
-  margin-right: 5px;
+  margin-right: 5px 7px;
   outline: none !important;
 }
 

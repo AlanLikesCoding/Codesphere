@@ -5,8 +5,10 @@ import os
 # Geolocation
 from json import load
 from urllib.request import urlopen
+# Local Libaries
 from .libs import generate_token
 from .libs import Colors
+from .libs import Tag
 # Django Libaries
 # Django core
 from django.core.mail import send_mail
@@ -92,6 +94,46 @@ def login_view(request):
       "form": LoginForm()
     })
 
+def reset(request, token = None, uidb64 = None):
+  if request.method == "POST":
+    if "email" in request.POST:
+      if User.objects.filter(email=request.POST["email"]).first() is not None:
+        user = User.objects.filter(email=request.POST["email"]).first()
+        _email = request.POST["email"]
+        current_site = get_current_site(request)
+        mail_subject = 'Reset your password.'
+        message = render_to_string('codesphere/reset_password.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'id': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': generate_token.make_token(user),
+        })
+        send_mail(mail_subject, message, 'support@codesphere.org', [_email])
+        return render("reset_prompt.html", {
+          "message": "Please check your email to reset your password."
+        })
+  else:
+    return render(request, "codesphere/reset_prompt.html")
+
+  if token is not None and uidb64 is not None:
+    if request.method == "POST":
+      if request.POST["password"] != request.POST["confirmation"]:
+        return render("codesphere/reset.html", {
+          "message": "Password and confirmation don't match!"
+        })
+      try:
+        id = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=id)
+      except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+      if user is not None and account_activation_token.check_token(user, token):
+        user.passord = request.POST["password"]
+        user.save()
+        return HttpResponseRedirect(reverse("login"))
+      else:
+        return HttpResponse("codesphere/reset.html", {
+          "message": "Password reset link isn't valid!"
+        })
 @login_required
 def logout_view(request):
   logout(request)
@@ -225,17 +267,69 @@ def ask(request):
     "form": AskForm()
   })
 
-def forum(request):
+def forum(request, _sort=None, _tag=None):
   # Output all questions to forum page
-  data = Question.objects.all()
+  data = None
+  # Get the most popular posts for sidepanel
+  popular = Question.objects.order_by('upvotes')[:3]
+  # If sort isn't None
+  if(_sort is not None):
+    if _sort == 1:
+      data = Question.objects.order_by('-timestamp')
+      print("recent")
+    elif _sort == 2:
+      data = Question.objects.order_by('-upvotes')
+      print("upvotes")
+    elif _sort == 3:
+      data = Question.objects.order_by('timestamp')
+      print("oldest")
+    elif _sort == 4:
+      data = Question.objects.order_by('upvotes')
+      print("oldest")
+    else:
+      data = Question.objects.all()
+    # Tag list
+    tag_list = []
+    id_list = []
+    # If tag is not None:          
+    if _tag is not None:
+      tags = _tag.split("|")
+      for i in tags:
+        if i != "":
+          tag_list.append(i)
+      print("tag_list", tag_list)
+      for i in data:
+        __tag = i.tags.split("|")
+        for j in __tag:
+          for x in tag_list:
+            if x is None or j is None:
+              break
+            if x == j:
+              id_list.append(i.pk)
+              break
+            
+      data = data.filter(pk__in = id_list)
+  else:
+    data = Question.objects.all()
+  tags = []
+  for i in data:
+    _tags = i.tags.split("|")
+    if _tags is not None:
+      for j in _tags:
+        tags.append(Tag(j, i.pk))
+    elif i.tags is not None:
+      tags.append(Tag(i.tags, i.pk))
+  
   return render(request, "codesphere/forum.html", {
-    "questions": data
+    "questions": data,
+    "popular": popular,
+    "tag": tags
   })
 
 def display(request, _question):
   # Display the question
   question = Question.objects.get(pk=_question)
-  #Display all answwers with the answwered id corresponding to the questions id
+  # Display all answwers with the answwered id corresponding to the questions id
   answers = Answer.objects.filter(answered__id__exact = _question)
   # Get question comments
   qcomments = QuestionComment.objects.filter(question__id__exact = _question)
@@ -251,11 +345,16 @@ def display(request, _question):
         id_list.append(append_val.first().pk)
   # Get answer comments
   acomments = AnswerComment.objects.filter(id__in=id_list)
-  print(acomments)
   return render(request, "codesphere/display.html", {
     "question": question, 
     "answers": answers,
     "comment": CommentForm(),
+    "ask": AskForm(initial={
+      "question": question.question,
+      "tags": question.tags,
+      "content": question.content
+    }),
+    "tags": question.tags.split("|"),
     "qcomments": qcomments,
     "acomments": acomments
   })
@@ -270,7 +369,8 @@ def apiask(request):
       _user = request.user
       _question = form.cleaned_data["question"]
       _content = form.cleaned_data["content"]
-      post = Question.objects.create(asker = _user, question = _question, content = _content)
+      _tags = form.cleaned_data["tags"]
+      post = Question.objects.create(asker = _user, question = _question, content = _content, tags = _tags)
       post.save()
       url = "display";
       return redirect(reverse(url, kwargs={"_question": post.pk}))
@@ -501,3 +601,22 @@ def apiacomment(request, _answer):
       comment = AnswerComment.objects.create(content = _content, commenter = _user, answer = Answer.objects.get(pk=_answer))
       comment.save()
   return redirect(reverse(url, kwargs={"_question": _question}))
+
+def apiqedit(request, _question):
+  _user = request.user
+  id = _question
+  print(_question)
+  url = "display";
+  question = Question.objects.get(pk=_question)
+  if request.method == "POST":
+    if _user.pk == question.asker.pk:
+      form = AskForm(request.POST)
+      if form.is_valid():
+        _question = form.cleaned_data["question"]
+        _tags = form.cleaned_data["tags"]
+        _content = form.cleaned_data["content"]
+        question.question = _question
+        question.tags = _tags
+        question.content = _content
+        question.save()
+  return redirect(reverse(url, kwargs={"_question": id}))

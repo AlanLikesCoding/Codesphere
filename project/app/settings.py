@@ -16,9 +16,64 @@ import sys
 import platform
 
 # Logging
+
 LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose-info': {
+            'format': '\033[1m\033[92m[{levelname}]\033[0m {asctime} | {message}',
+            'style': '{',
+        },
+        'verbose-warning': {
+            'format': '\033[1m\033[93m{levelname}]\033[0m {asctime} | {message}',
+            'style': '{',
+        },
+        'verbose-error': {
+            'format': '\033[1m\033[91m[{levelname}]\033[0m {asctime} | {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console-info': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose-info'
+        },
+        'console-warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose-warning'
+        },
+        'console-error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose-error'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console-info', 'console-warning', 'console-error'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console-info'],
+            'level': 'ERROR',
+            'propagate': False,
+        }
+    }
 }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -149,7 +204,7 @@ EMAIL_HOST_USER = 'support@codesphere.org'
 
 EMAIL_HOST_PASSWORD = os.environ['db_email']
 
-EMAIL_PORT = 110
+EMAIL_PORT = 465
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

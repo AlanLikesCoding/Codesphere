@@ -3,8 +3,6 @@ from django.db import models
 
 from django.urls import reverse
 
-from .libs import filename
-
 # Model for user
 class User(AbstractUser):
   # Many to many field for the questions that have been upvoted
@@ -16,7 +14,6 @@ class User(AbstractUser):
   answer_downvoted = models.ManyToManyField("Answer", related_name="a_down", blank=True)
   # About the User
   # Profile Picture field
-  # picture = models.ImageField(upload_to=filename, default="profile/default.png")
   picture = models.TextField(default="/media/profile/default.png")
   # Text Field for Bio
   bio = models.TextField(null=True)
@@ -35,6 +32,7 @@ class Question(models.Model):
   timestamp = models.DateTimeField(auto_now=True)
 
   question = models.CharField(max_length=200)
+  tags = models.TextField()
   content = models.TextField()
 
   # Number of upvotes a question has

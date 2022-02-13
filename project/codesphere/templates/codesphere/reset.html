@@ -1,0 +1,32 @@
+{% extends "codesphere/layout.html" %}
+
+{% block body %}
+<div class="container px-5 h-100">
+  <div class="mx-5 px-5 py-5">
+    <div class="card mx-auto col-6" style="background-color: #f8f9fa">
+      <div class="card-body form mx-5">
+        <h2 class="display-3">Reset Password</h2>
+        <form action="{% url 'reset' %}" class="list-group" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Please insert your password: </label><br>
+            <input type="password" name="password" id="password" class="form-control">
+          </div><br>
+          <div class="form-group">
+            <label>Please confirm your password: </label><br>
+            <input type="password" name="confirm" id="confirm" class="form-control">
+          </div><br>
+          <input class="btn codesphere-grad-dark" id="btn" type="submit" value="Reset Password"><hr>
+          {% if message %}
+            <div class="alert alert-danger" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
