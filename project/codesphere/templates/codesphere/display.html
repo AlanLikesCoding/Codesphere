@@ -69,10 +69,10 @@
         </div>
         <div class="col-lg-3 mt-3">
           <form action="{% url 'apiqcomment' question.id %}" method="POST">
+            {% csrf_token %}
             <div class="input-group mh-25">
-              {% csrf_token %}
               {{ comment.content }}
-              <input type="submit" class="codesphere-fill-btn">
+              <input type="submit" class="btn codesphere-fill-btn">
             </div>
           </form>
         </div>
@@ -152,10 +152,10 @@
         </div>
       <div class="col-lg-3 mt-3">
         <form action="{% url 'apiacomment' i.id %}" method="POST">
+          {% csrf_token %}
           <div class="input-group mh-25">
-            {% csrf_token %}
             {{ comment.content }}
-            <input type="submit" class="codesphere-fill-btn">
+            <input type="submit" class="btn codesphere-fill-btn">
           </div>
         </form>
       </div>
