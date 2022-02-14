@@ -28,3 +28,9 @@ class Tag(object):
   def __init__(self, tag, pk):
     self.tag = tag
     self.pk = pk
+
+# Answer number class
+class AnswerNumber(object):
+  def __init__(self, number, pk):
+    self.number = number
+    self.pk = pk

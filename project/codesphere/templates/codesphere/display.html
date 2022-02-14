@@ -1,4 +1,8 @@
-{% extends "codesphere/layout.html" %} {% block body %}
+{% extends "codesphere/layout.html" %} 
+{% block title %}
+{{ question.question }} | Codesphere
+{% endblock %}
+{% block body %}
 <div class="container">
 	<div class="main">
 		<div class="card shadow-sm post">
@@ -6,8 +10,8 @@
 				<div class="upvote">
 					<span class="num">{{ question.upvotes }}</span>
             <div class="ctrl-btn">
-              <button class="btn-upvote" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
-              <button class="btn-downvote" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
+              <button class="btn-upvote rounded-circle" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
+              <button class="btn-downvote rounded-circle" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
             </div>
         </div>
         <div class="user-display">
@@ -102,8 +106,8 @@
          <div class="upvote">
             <span class="num">{{ i.upvotes }}</span>
             <div class="ctrl-btn">
-               <button class="btn-upvote" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
-               <button class="btn-downvote" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
+               <button class="btn-upvote rounded-circle" {% if request.user %}onclick="avote({{ i.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
+               <button class="btn-downvote rounded-circle" {% if request.user %} onclick="avote({{ i.id }}, 'down')"{% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
             </div>
          </div>
          <div class="user-display">
@@ -120,7 +124,10 @@
          <hr />
         <div style="float: right;" class="mb-1">
           {% if question.asker.pk == user.pk %}
-          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-g rounded-circle bi bi-check-lg"></i> Correct</li>
+          <form action="{% url 'apicorrect' i.pk True %}" method="post">
+            {% csrf_token %}
+            <li type="submit" class="d-inline rounded-pill codesphere-btn"><i class="icon-g rounded-circle bi bi-check-lg"></i> Correct</li>
+          </form>
           {% endif %}
           {% if request.user.pk == i.replier.pk %}
           <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#answer_{{ i.id }}"><i class="icon-g rounded-circle bi bi-pencil-square"></i> Edit</li>

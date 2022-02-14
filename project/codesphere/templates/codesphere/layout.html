@@ -3,7 +3,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- TAGS FOR SEO -->
         <title>{% block title %}Codesphere{% endblock %}</title>
+        <meta name="description" content="Description of my website">
+        <meta name="robots" content="index,follow">
+        <meta name="keywords" content="Question, Answer, Q&A, Community, Discussion, Coding Website">
+        <link rel="canonical" href="https://codesphere.org/">
+
+        <meta property="og:title" content="Codesphere" />
+        <meta property="og:description" content="Welcome to Codesphere, where we celebrate your wonders and opinions." />
+        <meta property="og:image" content="{% static 'codesphere/img/favicon.png'" />
+        <meta property="og:url" content="https://codesphere.org" />
+        <meta property="og:site_name" content="Codesphere" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- FAVICON FOR CODESPHERE -->
         <link rel="icon" type="image/png" href="{% static 'codesphere/img/favicon.png' %}">
         <!--- BOOTSRAP FRAMEWORKS, AND LIBARIES -->
@@ -22,7 +34,6 @@
         <script src="{% static 'codesphere/js/lib.js' %}"></script>
         <script src="{% static 'codesphere/js/parser.js' %}"></script>
         <script src="{% static 'codesphere/js/script.js' %}"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
 
@@ -62,8 +73,8 @@
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{user.username}}
                       </a>
-                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <img src="{{ user.picture }}" width="42" height="42"><br>
+                      <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
+                        <img src="{{ user.picture }}" class="rounded-circle" width="42" height="42"><br>
                         <strong>{{user.username}}</strong>
                         <li><hr class="dropdown-divider"></li>
                         <li>

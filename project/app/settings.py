@@ -26,7 +26,7 @@ LOGGING = {
             'style': '{',
         },
         'verbose-warning': {
-            'format': '\033[1m\033[93m{levelname}]\033[0m {asctime} | {message}',
+            'format': '\033[1m\033[93m[{levelname}]\033[0m {asctime} | {message}',
             'style': '{',
         },
         'verbose-error': {

@@ -120,7 +120,6 @@ const markdown = (text) => {
     let end = tree[i].end;
     let type = tree[i].type;
     let text = tree[i].text
-    console.log(start, end, type)
     if (type == "normal") {
       res[start] = text
     } else {
@@ -173,3 +172,20 @@ const profanity = (text) => {
 	});
 	return text
 };
+
+/*
+CODESPHERE TAGGING COLORS
+*/
+
+var colorTags = function(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  var colour = '#';
+  for (var i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 0xFF;
+    colour += ('00' + value.toString(16)).substr(-2);
+  }
+  return colour;
+}

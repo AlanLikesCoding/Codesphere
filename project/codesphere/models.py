@@ -92,3 +92,11 @@ class AnswerComment(models.Model):
   
   # Link to former question
   answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name="answer_relation")
+
+# class Report(models.Model):
+#   # User
+#   reporter = models.ForeignKey(User, on_delete = models.SET_NULL, null=True, related_name="reporter")
+#   # Content of report
+#   content = models.TextField()
+  
+

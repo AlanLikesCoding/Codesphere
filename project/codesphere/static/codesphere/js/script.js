@@ -77,6 +77,12 @@ const load = () => {
     text = profanity(text);
     parse[i].innerHTML = text
   }
+  let tags = document.getElementsByClassName("badge")
+  // for(let i = 0; i < tags.length; i++){
+  //   let text = tags[i].innerText;
+  //   let colour = colorTags(text);
+  //   tags[i].style = "background-color: " + colour + " !important;"
+  // }
 }
 
 window.onload = load

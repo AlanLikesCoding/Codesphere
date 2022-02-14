@@ -108,13 +108,13 @@ input[type=file]::file-selector-button {
 }
 
 .codesphere-fill-btn {
-  color: #DCD8FA;
-  background-color: var(--extra-dark);
+  color: rgb(244, 243, 255);
+  background-color: #9486FF;
   transition: 0.4s;
-  border-color: var(--extra-dark);
+  border-color: #9486FF;
 }
 .codesphere-fill-btn:hover {
-  color: var(--extra-dark);
+  color: #9486FF;
   background-color: #DCD8FA;
   border-color: #DCD8FA;
 }
@@ -157,7 +157,7 @@ input[type=file]::file-selector-button {
 .icon-p {
   background-color: #DCD8FA;
   color: #9486FF;
-  padding: 5px 7px
+  padding: 5px 7px;
 }
 
 .icon-g {
@@ -178,7 +178,7 @@ input[type=file]::file-selector-button {
   padding: 5px 7px;
 }
 
-@media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) {
   .container {
     margin: 0em !important;
     padding: 0px !important;
@@ -197,7 +197,7 @@ input[type=file]::file-selector-button {
   .card {
     width: 100% !important;
   }
-}
+} */
 .header-container{
   position: relative;
   display: inline-block;
@@ -261,16 +261,31 @@ input[type=file]::file-selector-button {
 .btn-upvote, .btn-downvote{
   transition-duration: 0.4s;
   transition-timing-function: ease;
-  color: var(--dark);
+  color: var(--extra-dark);
   border: none;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0);
   padding: none;
   margin-right: 5px 7px;
   outline: none !important;
 }
 
 .btn-upvote:hover:not(:disabled), .btn-downvote:hover:not(:disabled){
-  color: grey;
-  font-size: 17px !important;
+  background-color: #DCD8FA;
+  color: #9486FF;
 }
 
+
+.nav-link {
+  color: #9486FF;
+  margin: 1px;
+}
+
+.nav-link:hover {
+  background-color: #9486FF;
+  color: #DCD8FA;
+}
+
+.nav .active {
+  background-color: #9486FF !important;
+  color: rgb(244, 243, 255) !important;
+}

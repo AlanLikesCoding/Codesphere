@@ -9,6 +9,7 @@ from urllib.request import urlopen
 from .libs import generate_token
 from .libs import Colors
 from .libs import Tag
+from .libs import AnswerNumber
 # Django Libaries
 # Django core
 from django.core.mail import send_mail
@@ -312,17 +313,22 @@ def forum(request, _sort=None, _tag=None):
   else:
     data = Question.objects.all()
   tags = []
+  # Get number of answers
+  answer = []
   for i in data:
+    answer_no = Answer.objects.filter(answered__id__exact=i.pk).count
+    answer.append(AnswerNumber(answer_no, i.pk))
     _tags = i.tags.split("|")
     if _tags is not None:
       for j in _tags:
         tags.append(Tag(j, i.pk))
     elif i.tags is not None:
       tags.append(Tag(i.tags, i.pk))
-  
+
   return render(request, "codesphere/forum.html", {
     "questions": data,
     "popular": popular,
+    "answers": answer,
     "tag": tags
   })
 
@@ -630,4 +636,19 @@ def apiaedit(request, _answer):
       _content = request.POST["content"]
       answer.content = _content
       answer.save()
+  return redirect(reverse(url, kwargs={"_question": id}))
+
+def apicorrect(request, _answer, _bool):
+  _user = request.user
+  answer = Answer.objects.get(pk=_answer)
+  question = answer.answered
+  id = question.pk
+  url = "display"
+  if request.method == "POST":
+    if request.user.pk == question.asker.pk:
+      question.answered_correct = _bool
+      answer.correct = _bool
+      answer.save()
+      question.save()
+
   return redirect(reverse(url, kwargs={"_question": id}))
