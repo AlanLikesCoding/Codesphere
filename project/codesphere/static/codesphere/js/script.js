@@ -50,7 +50,7 @@ const filter = () => {
 const addTag = () => {
   let input = document.getElementById("tags")
   if(input == null) return
-  document.getElementById("display").innerHTML += "<span class='badge bg-secondary me-1'>" + input.value + "<button type='button' class='btn-close' aria-label='Close' onclick='closeTag(this.parentElement)'></button></span>"
+  document.getElementById("display").innerHTML += "<span class='badge bg-secondary me-1 mt-1'>" + input.value + "<button type='button' class='btn-close' aria-label='Close' onclick='closeTag(this.parentElement)'></button></span>"
   document.getElementById("tags_input").value += input.value + "|"
   input.value = ""
 }
@@ -71,12 +71,12 @@ const load = () => {
   // Markdown Everything
   $.log("Onload Proccess Started.")
   let parse = document.getElementsByClassName("parse");
-  for(let i = 0; i < parse.length; i++){
-    let text = parse[i].innerText;
-    text = markdown(text);
-    text = profanity(text);
-    parse[i].innerHTML = text
-  }
+  // for(let i = 0; i < parse.length; i++){
+  //   let text = parse[i].innerText;
+  //   // text = markdown(text);
+  //   text = profanity(text);
+  //   parse[i].innerText = text
+  // }
   let tags = document.getElementsByClassName("badge")
   // for(let i = 0; i < tags.length; i++){
   //   let text = tags[i].innerText;

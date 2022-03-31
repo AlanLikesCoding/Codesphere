@@ -16,12 +16,22 @@
                   <div class="form-group">
                     <label>Password: </label><br>
                     {{ form.password }}
+                    <p><input class="btn codesphere-grad-dark" type="checkbox" onclick="myFunction()"> Show Password</p>
                   </div>
-                  <br>
+                <script>
+function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
                   <input class="btn codesphere-grad-dark" id="btn" type="submit" value="Login">
                   <hr>
                   <small class="text-muted">Don't have an account? <a href="{% url 'register' %}">Register here.</a></small>
-                  <small class="text-muted">Forgot your passcode? <a href="{% url 'reset' %}">Reset it here</a></small>
+                  <small class="text-muted">Forgot your password? <a href="{% url 'reset' %}">Reset it here</a></small>
                   {% if message %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert"" role="alert">
                       {{ message }}

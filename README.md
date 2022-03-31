@@ -1,37 +1,23 @@
 # Codesphere
 
-Codesphere is a python application that you can use to communicate with the coding community, inspired by other big forum websites such as StackOverflow and Quora.
+Codesphere is a Q&A website made with Django and web technologies. It is the first version and an abandoned version of the Codesphere.org website. Most of this website was made by [@Anvay](https://github.com/megagames-me) and [@Alan](https://github.com/AlanLikesCoding/codesphere). If you would like to use this website for personal purposes, you **must** disclose your source(this repository).
 
-With the Codesphere webapp, you can ask a question, and get many answers from our community of coders. You can also join the community in our quest to answer questions and ask meaningful ones as well. This is a friendly community for coders of all levels. 
+## Installation
 
-The techonologies we used are Django, and basic web developement(HTML, CSS, JS).
-
-Some ffeatures we hope to implement in the future include CMS on our admin platform, making a tutorial site, frameworks, and much more interesting projects.
+Currently, there isn't a simple way to install this website, so unfortunately, you will have to `git clone` it.
+```bash
+git clone https://github.com/AlanLikesCoding/Stor-io.git
+```
 
 ## Usage
 
-### Normal
-To use this website, please proceed to [Codesphere.org](https://www.codesphere.org). To go further, please make an account, and then you can begin your journey with Codesphere by making an account.
-
-### Admin
-For the admin panel on this website, please make an account, and request admin abilities from one of our already existing admins and we will give you admin privileges. Then, use the navbar to go to the admin panel. Please not to actually not change anything(unless banning) due to the fact that changing hashed passwords, or any database info in general, will cause chaos.
+In order to use this website, you need the `django` dependency as well as the `pillow` dependencies. Then, simply run `python manage.py runserver` to run the server.
 
 ## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-For the contributing section of this website, please refer to `CONTRIBUTING.md` for more data.
+Please make sure to update tests as appropriate. As of right now, please use the SemVer versioning scheme and put your changes in the [changelog](CHANGELOG.md) file.
 
-### Current Members of the Codesphere Organization
-- *Alan* - CEO, Full Stack
-- *Anvay* - CTO, Full Stack
-- *Alex* - COO, Frontend
-- *Tim* - CDO, Frontend
-
-## Features
-Login system, and regsiter system with email verification. <br>
-Asking, answering, and upvoting questions as well as answers. <br>
-Markdown parsing and profanity filter. <br>
-Admin panel, with abilities to edit the MySQL database we are using.
-
+If we have enough contributions to this uncomplete website, we might decide to bring it back online.
 ## License
-[Mozilla Public License 2.0 (MPL 2.0)
-](https://choosealicense.com/licenses/mpl-2.0/)
+[GNU AGPLv3](LICENSE.txt)

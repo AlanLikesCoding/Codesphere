@@ -84,7 +84,7 @@ class QuestionComment(models.Model):
 class AnswerComment(models.Model):
   # User
   commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="answer_commenter")
-  #Content of the question
+  # Content of the comment
   content = models.TextField()
 
   # Timestamp of last time the model has been edited
@@ -92,6 +92,16 @@ class AnswerComment(models.Model):
   
   # Link to former question
   answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name="answer_relation")
+
+# Model for the Collectives
+class Collective(models.Model):
+  # Names, and other info regarding collective
+  creator = models.ForeignKey(User, on_delete=models.CASCADE,null=True, related_name="collective_creator")
+  name = models.TextField()
+  description = models.TextField()
+  icon = models.TextField(default="/media/collective/default.png")
+  # Questions under this collective
+  question = models.ManyToManyField(Question, related_name="colletive_question", blank=True)
 
 # class Report(models.Model):
 #   # User

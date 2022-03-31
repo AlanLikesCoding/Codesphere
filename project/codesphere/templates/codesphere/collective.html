@@ -3,8 +3,8 @@
   <div class="row mt-3">
     <div class="col-lg-2 mt-5">
       <nav class="nav nav-pills flex-column">
-        <a class="nav-link shadow-sm rounded-pill active" aria-current="page" href="#">Forum</a>
-        <a class="nav-link rounded-pill" href="{% url 'collective' %}">Colletives</a>
+        <a class="nav-link rounded-pill" aria-current="page" href="#">Forum</a>
+        <a class="nav-link shadow-sm rounded-pill active" href="{% url 'collective' %}">Colletives</a>
       </nav>
     </div>
     <div class="col-lg-10">
@@ -12,40 +12,16 @@
         <div class="col-lg-9">
           <div class="card shadow mb-5">
             <div class="card-body">
-              <button class="btn text-muted" style="background-color: rgba(0, 0, 0, 0); color: rgba(0, 0, 0, 0)">Create a new thread.</button>
+              <button class="btn text-muted" style="background-color: rgba(0, 0, 0, 0); color: rgba(0, 0, 0, 0)">Create a new collective.</button>
               <button style="border-radius: 9px;" class="btn float-end codesphere-fill-btn">+</button>
             </div>
           </div>
-          {% for i in questions %}
+          {% for i in collectives %}
           <div class="card shadow post mb-5">
             <div class="card-body" onclick="window.location.href='{% url 'display' i.id %}'">
-              <div class="upvote">
-                <span class="num">{{ i.upvotes }}</span>
-                <div class="ctrl-btn">
-                  <button class="btn-upvote rounded-circle" {% if request.user %}onclick="vote({{ question.id }}, 'up')"{% else %} disabled {% endif %}><i class="bi bi-caret-up-fill"></i></button><br>
-                  <button class="btn-downvote rounded-circle" {% if request.user %} onclick="vote({{ question.id }}, 'down')" {% else %} disabled {% endif %}><i class="bi bi-caret-down-fill"></i></button>
-                </div>
-              </div>
-              <div class="user-display">
-                <img src="{{ i.asker.picture }}" class="rounded-circle" width="42" height="42">
-                <div class="user-info text-muted">{{ i.asker.username }}<br><div class="time">{{ i.timestamp }}</div></div><br>
-              </div>
-              <h3>{{ i.question }}</h3>
-                {% for j in tag %}
-                {% if j.pk == i.pk %}
-                <span class="badge bg-secondary">{{ j.tag }}</span>
-                {% endif %}
-                {% endfor %}
-                <p class="parse">{{ i.content|truncatechars:90 }}</p>
-              </div>
-              <div class="mb-1">
-                {% for j in answers %}
-                {% if j.pk == i.pk %}
-                <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#question_{{ question.id }}"><i class="icon-g rounded-circle bi bi-check-lg"></i> {{ j.number }} Answers</li>
-                {% endif %}
-                {% endfor %}
-                <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#question_{{ question.id }}"><i class="icon-p rounded-circle bi bi-hand-thumbs-up-fill"></i> {{ i.upvotes }} Likes</li>
-              </div>
+              <h3>{{ i.name }}</h3>
+              <p class="parse">{{ i.description }}</p>
+            </div>
           </div>
       {% endfor %} 
       </div>

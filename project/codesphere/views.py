@@ -39,12 +39,14 @@ from django.template.loader import render_to_string, get_template
 from .models import Question
 from .models import Answer
 from .models import User
+from .models import Collective
 from .models import QuestionComment
 from .models import AnswerComment
 
 # Django Forms
 from .forms import LoginForm
 from .forms import RegisterForm
+from .forms import CollectiveForm
 from .forms import AskForm
 from .forms import AboutForm
 from .forms import CommentForm
@@ -332,6 +334,19 @@ def forum(request, _sort=None, _tag=None):
     "tag": tags
   })
 
+def collective(request):
+  collectives  = Collective.objects.all()
+  popular = Question.objects.order_by('upvotes')[:3]
+  return render(request, "codesphere/collective.html", {
+    "collectives": collectives,
+    "popular": popular
+  })
+
+def create(request):
+  return render(request, "codesphere/create.html", {
+    "form": CollectiveForm
+  })
+
 def display(request, _question):
   # Display the question
   question = Question.objects.get(pk=_question)
@@ -380,6 +395,31 @@ def apiask(request):
       post.save()
       url = "display";
       return redirect(reverse(url, kwargs={"_question": post.pk}))
+
+def apicollective(request):
+  if request.method == "POST":
+    form = CollectiveForm(request.POST)
+    if form.is_valid():
+      _user = request.user
+      _name = form.cleaned_data["name"]
+      _content = form.cleaned_data["content"]
+      collective = Collective.objects.create(creator = _user, name = _name, description = _content)
+      collective.save()
+      pk = collective.pk
+      print(pk)
+      if "icon" in request.FILES:
+        # Filefield
+        picture = request.FILES["icon"]
+        # Paths
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = "/media/collective/" + str(pk) + ".jpeg"
+        print(path)
+        # Create File
+        directory = os.path.join(base, "codesphere" + path)
+        open(directory, "wb+").write(picture.file.read())       
+        collective.icon = path
+      collective.save()
+  return render(request, "codesphere/index.html")
 
 # Api for /display.html answer form
 # NOT REST (no JSON response)

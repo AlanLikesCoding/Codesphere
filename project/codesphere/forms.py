@@ -32,6 +32,17 @@ class AskForm(forms.Form):
   # Question content form
   content = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Enter information about your question that will help others answer your question here...","class":"form-control", "rows": 12}), min_length=40)
 
+  # Form on the /ask.html page
+class CollectiveForm(forms.Form):
+  class Meta: 
+    model = models.Collective
+  # Collective name
+  name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter the name of your collective here...","id":"header"}), max_length=20)
+  # Collective description
+  content = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Enter information about your collective here...","class":"form-control", "rows": 12}), max_length=100)  
+  # Collective icon
+  icon = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={"name": "icon"}))
+
 class AboutForm(forms.Form):
   class Meta:
     model = models.User

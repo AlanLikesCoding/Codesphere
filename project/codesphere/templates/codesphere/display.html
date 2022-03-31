@@ -1,4 +1,4 @@
-{% extends "codesphere/layout.html" %} 
+ {% extends "codesphere/layout.html" %} 
 {% block title %}
 {{ question.question }} | Codesphere
 {% endblock %}
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="user-display">
-            <img src="{{ question.asker.picture }}" width="42" height="42">
+            <img src="{{ question.asker.picture }}" class="rounded-circle"  width="42" height="42">
             <div class="user-info text-muted">
               {{ question.asker.username }}<br>
               <div class="time">{{ question.timestamp }}</div>
@@ -29,7 +29,7 @@
           {% if question.asker.pk == user.pk %}
           <li class="d-inline rounded-pill codesphere-btn" data-bs-toggle="modal" data-bs-target="#question_{{ question.id }}"><i class="icon-g rounded-circle bi bi-pencil-square"></i> Edit</li>
           {% endif %}
-          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-b rounded-circle bi bi-bookmark"></i> Save</li>
+          <li class="d-inline rounded-pill codesphere-btn"><i class="icon-b rounded-circle bi bi-bookmark"></i> Follow</li>
           <li class="d-inline rounded-pill codesphere-btn"><i class="icon-r rounded-circle bi bi-flag"></i> Report</li>
           <button class="d-inline codesphere-btn rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse"><i class="icon-p rounded-circle bi bi-chat-dots"></i> Comments</button>
         </div>
@@ -84,7 +84,7 @@
         <div class="comment collapse" id="collapse">
           {% for i in qcomments %}
           <div class="user-display">
-            <img src="{{ i.commenter.picture }}" width="42" height="42">
+            <img src="{{ i.commenter.picture }}" class="rounded-circle" width="42" height="42">
             <div class="user-info text-muted">
               {{ i.commenter.username }}<br>
               <div class="time">{{ i.timestamp }}</div>
@@ -111,7 +111,7 @@
             </div>
          </div>
          <div class="user-display">
-            <img src="{{ i.replier.picture }}" width="42" height="42">
+            <img src="{{ i.replier.picture }}" class="rounded-circle" width="42" height="42">
             <div class="user-info text-muted">
                {{ i.replier.username }}<br>
                <div class="time">{{ i.timestamp }}</div>
@@ -124,7 +124,7 @@
          <hr />
         <div style="float: right;" class="mb-1">
           {% if question.asker.pk == user.pk %}
-          <form action="{% url 'apicorrect' i.pk True %}" method="post">
+          <form style="display: inline;" action="{% url 'apicorrect' i.pk True %}" method="post">
             {% csrf_token %}
             <li type="submit" class="d-inline rounded-pill codesphere-btn"><i class="icon-g rounded-circle bi bi-check-lg"></i> Correct</li>
           </form>
@@ -171,7 +171,7 @@
         {% for j in acomments %}
         {% if j.answer.id == i.pk %}
         <div class="user-display">
-          <img src="{{ j.commenter.picture }}" width="42" height="42">
+          <img src="{{ j.commenter.picture }}" class="rounded-circle" width="42" height="42">
           <div class="user-info text-muted">
             {{ j.commenter.username }}<br>
             <div class="time">{{ j.timestamp }}</div>

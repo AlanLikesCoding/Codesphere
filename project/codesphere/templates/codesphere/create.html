@@ -7,12 +7,10 @@
       <form action="{% url 'apicollective' %}" method="POST">
       {% csrf_token %}
         <div class="header-container">
-          {{ form.question }}<span class="underline"></span>
+          {{ form.name }}<span class="underline"></span>
         </div><br>
         <div class="input-group mt-3">
-          <input type="text" class="form-control" id="tags">
-          {{ form.tags }}
-          <span class="btn codesphere-fill-btn" onclick="addTag()">Add Tag</span>
+          {{ form.icon }}
         </div>
         <div id="display" class="mb-3 mt-3"></div>
         {{ form.content }}<hr>
