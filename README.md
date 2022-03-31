@@ -1,6 +1,6 @@
 # Codesphere
 
-Codesphere is a Q&A website made with Django and web technologies. It is the first version and an abandoned version of the Codesphere.org website. Most of this website was made by [@Anvay](https://github.com/megagames-me) and [@Alan](https://github.com/AlanLikesCoding/codesphere). If you would like to use this website for personal purposes, you **must** disclose your source(this repository).
+Codesphere is a Q&A website made with Django and web technologies. It is the first version and an abandoned version of the Codesphere.org website. Most of this website was made by [@Anvay](https://github.com/megagames-me) and [@Alan](https://github.com/AlanLikesCoding). If you would like to use this website for personal purposes, you **must** disclose your source(this repository).
 
 ## Installation
 
